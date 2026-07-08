@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Users, Loader, Shield, TrendingUp, Scale, Crown, ChevronDown, ChevronUp } from 'lucide-react'
 
-const API_BASE = 'http://localhost:8000'
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
 const AGENTS = [
   {
