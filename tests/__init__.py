@@ -1,0 +1,1 @@
+# CreditPulse tests package

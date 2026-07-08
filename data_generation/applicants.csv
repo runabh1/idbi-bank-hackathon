@@ -1,0 +1,201 @@
+applicant_id,business_name,sector,region,tier,years_in_business,employee_count,gstin,entity_type
+1,National Garments Pvt Ltd,textiles,Hyderabad,Tier1,1.9,224,062CXUG2M8XFZ1,NTB
+2,Bharat Naturals Bros,food_processing,Hyderabad,Tier1,13.8,21,09Z5X9L9LQRXZ7,NTC
+3,Sri Forge LLP,manufacturing,Hyderabad,Tier1,8.6,11,07X9DWPV81B6Z5,NTC
+4,Shree Stores,retail,Chennai,Tier1,17.3,117,07TFJQQTFNKPZ3,existing_customer
+5,Pioneer Forge LLP,manufacturing,Bengaluru,Tier1,2.2,175,29MVEM8ZPW7LZ3,NTC
+6,Modern Foods LLP,food_processing,Rajkot,Tier3,12.2,132,36GH8SHEC4D2Z8,NTC
+7,Pioneer Works Pvt Ltd,manufacturing,Bengaluru,Tier1,11.3,154,29423FQPYJRKZ7,existing_customer
+8,Heritage Tech LLP,services,Delhi,Tier1,14.7,122,09RKNT833EJXZ8,NTB
+9,Bharat Forge Bros,manufacturing,Rajkot,Tier3,5.5,197,294D6367QPNPZ0,existing_customer
+10,Bharat Mart & Co.,retail,Mumbai,Tier1,11.9,204,367S41RW6AHFZ9,existing_customer
+11,Sri Works Bros,manufacturing,Pune,Tier2,4.7,33,09C4SUXV0KAMZ5,existing_customer
+12,Star Retail Group,retail,Pune,Tier2,6.8,246,27PRX9JA2M0XZ7,existing_customer
+13,Sunrise Naturals,food_processing,Bengaluru,Tier1,14.7,46,09X3C2RKBGB7Z5,existing_customer
+14,Sunrise Industries,manufacturing,Pune,Tier2,3.8,93,06K3QPQ8MGZNZ7,existing_customer
+15,Bharat Exports LLP,food_processing,Varanasi,Tier3,11.0,212,06DMLR0FRR06Z6,NTC
+16,Star Tech & Co.,services,Mumbai,Tier1,11.7,95,294ZQEJXN8BFZ4,NTC
+17,Modern Processors Pvt Ltd,food_processing,Pune,Tier2,9.8,103,07AGT7E2ZHWZZ9,existing_customer
+18,Shree Stores,retail,Mumbai,Tier1,16.2,115,060UKLF0ZFNHZ9,existing_customer
+19,Galaxy Retail Pvt Ltd,retail,Chennai,Tier1,10.2,96,07CP0SPPVELCZ4,NTC
+20,Bharat Components Group,manufacturing,Hyderabad,Tier1,3.7,249,274TLF7H8TKCZ1,existing_customer
+21,Bharat Mfg Group,manufacturing,Bengaluru,Tier1,2.1,166,29FX6M7B5C82Z2,existing_customer
+22,Royal Retail LLP,retail,Varanasi,Tier3,1.0,229,36S3ZLCCQSGWZ3,existing_customer
+23,Star Exports & Co.,food_processing,Jaipur,Tier2,2.8,96,06JEREB85Q86Z8,existing_customer
+24,Galaxy Components LLP,manufacturing,Ahmedabad,Tier2,9.2,133,09A8T8HMBS5YZ4,existing_customer
+25,Modern Components LLP,manufacturing,Mumbai,Tier1,15.9,188,27PVGUCT1K9ZZ1,NTB
+26,Swadeshi Mills Group,textiles,Jaipur,Tier2,6.9,38,08TBEMSRWTMWZ1,existing_customer
+27,Star Components,manufacturing,Jaipur,Tier2,9.4,132,36SAMDQL65XWZ2,existing_customer
+28,Apex Mfg Bros,manufacturing,Pune,Tier2,3.5,163,293JVZGQQQGTZ6,existing_customer
+29,Modern Services Group,services,Coimbatore,Tier3,9.6,145,08LF7MN20XZWZ1,existing_customer
+30,Eagle Stores,retail,Bengaluru,Tier1,17.5,78,33ZSSV70KVU6Z3,NTC
+31,Shree Processors Bros,food_processing,Nagpur,Tier3,5.5,184,361H4KVKD1JBZ9,NTB
+32,Shree Mart & Co.,retail,Pune,Tier2,6.3,122,29P75SG8LX6DZ5,NTC
+33,Sunrise Works & Co.,manufacturing,Pune,Tier2,3.6,227,082G15KBLW7MZ4,existing_customer
+34,Eagle Industries LLP,manufacturing,Ahmedabad,Tier2,8.7,51,290Y0AMLYGWXZ4,existing_customer
+35,Galaxy Consultancy Pvt Ltd,services,Pune,Tier2,2.2,37,27JJ18L0AYZCZ1,NTB
+36,National Foods,food_processing,Hyderabad,Tier1,16.0,199,36NH8SR9NZ71Z8,existing_customer
+37,Star Stores & Co.,retail,Rajkot,Tier3,1.9,116,07CUTVFMTDGVZ0,existing_customer
+38,Prime Industries Group,manufacturing,Pune,Tier2,9.5,118,09YLAJAHCQZUZ0,existing_customer
+39,Bharat Weaves LLP,textiles,Varanasi,Tier3,7.7,198,08R7NC85E5E9Z3,NTC
+40,Galaxy Retail Bros,retail,Ahmedabad,Tier2,13.7,78,083JMK70D3Q2Z8,existing_customer
+41,Royal Fabrics Pvt Ltd,textiles,Mumbai,Tier1,1.1,155,27PHH5BTK30LZ5,NTC
+42,National Processors & Co.,food_processing,Delhi,Tier1,9.6,107,29XQS98Y2LQFZ3,existing_customer
+43,Galaxy Industries Group,manufacturing,Ahmedabad,Tier2,12.9,208,088UEJGX74D0Z1,NTB
+44,Eagle Exports,food_processing,Surat,Tier2,15.8,50,33S5M8A78D9SZ2,existing_customer
+45,National Components Bros,manufacturing,Lucknow,Tier2,10.2,200,06LN6R301LGLZ0,existing_customer
+46,Apex Enterprises LLP,retail,Pune,Tier2,16.9,150,29GHVJU8M1S0Z7,NTB
+47,Bharat Ventures,services,Bengaluru,Tier1,13.1,127,27T4C3BAEXCFZ2,NTC
+48,Galaxy Services & Co.,services,Surat,Tier2,16.8,235,27UPA0UKTZQ7Z1,existing_customer
+49,Modern Garments Bros,textiles,Ahmedabad,Tier2,9.7,210,07NPV9HZ4Y51Z0,NTC
+50,Shree Services Bros,services,Lucknow,Tier2,0.7,45,06V5DTBH56SBZ0,NTC
+51,Modern Foods Pvt Ltd,food_processing,Rajkot,Tier3,3.6,219,2910PCFJ4P6MZ7,existing_customer
+52,Shree Enterprises Pvt Ltd,retail,Coimbatore,Tier3,17.6,15,07M28P2BK9SNZ9,existing_customer
+53,National Tech,services,Hyderabad,Tier1,2.0,160,07CF0X1LDALNZ2,existing_customer
+54,Shree Traders & Co.,retail,Chennai,Tier1,10.2,106,06UW25AQ20V9Z2,NTB
+55,Galaxy Works & Co.,manufacturing,Chennai,Tier1,5.2,70,29QQSCJJXWGDZ3,NTC
+56,Modern Services,services,Hyderabad,Tier1,15.6,114,29LWZSGPL0X8Z7,NTB
+57,Prime Exports Pvt Ltd,food_processing,Lucknow,Tier2,16.8,53,278R0QKZ33PSZ6,NTB
+58,Galaxy Retail Bros,retail,Delhi,Tier1,14.3,20,08U75QB8Z3W7Z1,existing_customer
+59,Royal Enterprises LLP,retail,Jaipur,Tier2,11.2,146,08DDH1UZHNRZZ6,NTC
+60,Shree Traders,retail,Mumbai,Tier1,5.7,237,29MM2TMD0RCBZ7,existing_customer
+61,Swadeshi Mills Pvt Ltd,textiles,Coimbatore,Tier3,3.4,191,29MQR3XGYP16Z4,existing_customer
+62,Eagle Solutions Group,services,Ahmedabad,Tier2,13.7,209,073UNGDYS8LPZ3,NTC
+63,Eagle Garments Group,textiles,Chennai,Tier1,14.7,182,07YLJDNEPWVQZ4,existing_customer
+64,Bharat Forge Bros,manufacturing,Ahmedabad,Tier2,9.1,37,2758SGPVYPS0Z4,existing_customer
+65,National Mart Group,retail,Mumbai,Tier1,4.4,10,36FR12UDD23NZ8,existing_customer
+66,Apex Textiles LLP,textiles,Varanasi,Tier3,17.8,28,27RM3Q92J3VMZ7,existing_customer
+67,Sri Ventures LLP,services,Delhi,Tier1,14.7,208,36WF9KV8T63EZ7,existing_customer
+68,Bharat Tech Pvt Ltd,services,Agra,Tier3,2.7,223,0641YSVKQRX5Z0,existing_customer
+69,Sri Industries,manufacturing,Jaipur,Tier2,9.0,150,09XZ43P84SLKZ5,existing_customer
+70,Sri Traders & Co.,retail,Lucknow,Tier2,16.1,197,09A7FR9Q965LZ8,existing_customer
+71,Royal Agro & Co.,food_processing,Bengaluru,Tier1,7.0,233,08X01QDDHCWTZ4,NTB
+72,Galaxy Fabrics Pvt Ltd,textiles,Pune,Tier2,7.9,35,08D3DNLP35XZZ0,existing_customer
+73,Apex Works Bros,manufacturing,Delhi,Tier1,13.1,162,095CD1WP8LEKZ0,NTB
+74,Sunrise Forge Pvt Ltd,manufacturing,Surat,Tier2,17.0,8,331LB68SDSWTZ9,NTB
+75,Modern Exports,food_processing,Nagpur,Tier3,15.2,109,29182ACJBC2TZ6,NTB
+76,Star Mfg Pvt Ltd,manufacturing,Varanasi,Tier3,1.9,139,36CC79FMV1YXZ3,existing_customer
+77,Shree Services Group,services,Ahmedabad,Tier2,2.0,113,27L11E0ZF8T2Z7,NTC
+78,Sri Stores Bros,retail,Jaipur,Tier2,2.6,232,36TJ9XSTB5FFZ7,existing_customer
+79,Sunrise Industries Pvt Ltd,manufacturing,Pune,Tier2,9.4,13,27SPF75U71QLZ4,NTC
+80,Heritage Foods Pvt Ltd,food_processing,Mumbai,Tier1,2.6,174,33398CRK4MUAZ2,existing_customer
+81,Galaxy Works,manufacturing,Rajkot,Tier3,6.9,250,33F7AUXZAM1NZ7,NTC
+82,Sri Agro,food_processing,Hyderabad,Tier1,7.8,248,36D76TZN9CDEZ8,existing_customer
+83,National Garments LLP,textiles,Pune,Tier2,17.4,62,08Z1LKCG2VFFZ4,NTB
+84,Galaxy Consultancy & Co.,services,Bengaluru,Tier1,4.1,80,07FZ4ZB4MDJNZ5,existing_customer
+85,Star Exports Pvt Ltd,food_processing,Delhi,Tier1,7.6,117,07R3EA49E4NXZ6,NTC
+86,Royal Components Pvt Ltd,manufacturing,Pune,Tier2,1.6,233,0764MBRFV3PBZ6,NTC
+87,Sri Retail Group,retail,Ahmedabad,Tier2,8.3,40,33YS6SCPQX3JZ9,NTB
+88,Eagle Components LLP,manufacturing,Varanasi,Tier3,6.8,141,06PGLH62B9U2Z9,existing_customer
+89,Apex Traders Pvt Ltd,retail,Delhi,Tier1,14.8,236,08N44FW3Z7AZZ9,NTB
+90,Galaxy Mfg LLP,manufacturing,Delhi,Tier1,14.7,250,29SDHHTA7GE0Z9,existing_customer
+91,Shree Exports LLP,food_processing,Delhi,Tier1,16.6,200,07N8PDLEF828Z6,existing_customer
+92,Modern Mart,retail,Surat,Tier2,16.8,203,29N0LGAZV42VZ1,existing_customer
+93,Galaxy Agro LLP,food_processing,Rajkot,Tier3,10.4,241,07J9F6D0X6RKZ2,NTC
+94,Apex Weaves Pvt Ltd,textiles,Pune,Tier2,1.3,114,08SNUDS5YZFCZ8,existing_customer
+95,Heritage Naturals Pvt Ltd,food_processing,Bengaluru,Tier1,1.8,45,07U6DWWSB8F6Z1,existing_customer
+96,Apex Mills LLP,textiles,Delhi,Tier1,10.2,238,36LDPUSBAC4XZ4,NTB
+97,Sunrise Fabrics LLP,textiles,Delhi,Tier1,17.6,123,08S6KXPNNGBQZ2,existing_customer
+98,Royal Processors Group,food_processing,Ahmedabad,Tier2,12.2,23,089WU43QU5S5Z4,existing_customer
+99,Prime Mills Pvt Ltd,textiles,Pune,Tier2,16.3,206,078R8FHGBCZGZ8,existing_customer
+100,Shree Traders Bros,retail,Agra,Tier3,13.2,208,08U5T7AZV2DFZ5,NTB
+101,Eagle Forge Group,manufacturing,Coimbatore,Tier3,10.3,27,065JYVSFPXZPZ3,existing_customer
+102,Modern Foods LLP,food_processing,Pune,Tier2,16.6,231,36L45Z9HL12LZ7,existing_customer
+103,Apex Components Group,manufacturing,Ahmedabad,Tier2,16.5,106,063TFLTE45AGZ8,NTB
+104,National Garments Bros,textiles,Chennai,Tier1,6.8,52,08XEBNWG5VMFZ8,NTC
+105,Swadeshi Textiles,textiles,Chennai,Tier1,15.4,201,33ZKPA22A6YWZ0,NTC
+106,Pioneer Naturals LLP,food_processing,Jaipur,Tier2,12.9,72,09JRZ4PDTY4NZ6,existing_customer
+107,Royal Forge LLP,manufacturing,Mumbai,Tier1,6.4,72,36Y8YGTJB53PZ3,existing_customer
+108,Pioneer Enterprises,retail,Lucknow,Tier2,5.0,109,27V93M0ZXS7NZ3,existing_customer
+109,Apex Stores,retail,Rajkot,Tier3,2.2,34,2986YHH5Q6NVZ4,NTC
+110,Heritage Textiles Group,textiles,Surat,Tier2,11.4,122,075NLB5EGPV6Z4,existing_customer
+111,Bharat Processors,food_processing,Nagpur,Tier3,9.0,163,27AK1F1S1CWXZ4,existing_customer
+112,Sri Consultancy Group,services,Pune,Tier2,13.3,245,33AA0H5LDTLCZ0,existing_customer
+113,Royal Agro LLP,food_processing,Surat,Tier2,6.4,229,09NG87PH0E0WZ1,existing_customer
+114,Star Exports & Co.,food_processing,Pune,Tier2,11.7,199,27YYAZQNUSFZZ6,NTB
+115,Apex Agro Bros,food_processing,Pune,Tier2,5.2,157,07TXK2SW249NZ4,existing_customer
+116,Modern Mart & Co.,retail,Chennai,Tier1,12.5,125,27Y64YFDT0DJZ2,existing_customer
+117,Sunrise Processors LLP,food_processing,Mumbai,Tier1,3.6,12,06QD46AEYM68Z2,NTC
+118,Galaxy Garments Bros,textiles,Jaipur,Tier2,7.5,248,093Y3DZB8FQWZ8,NTC
+119,Royal Tech Bros,services,Chennai,Tier1,11.2,222,09DPBJLZZ2VVZ9,existing_customer
+120,Galaxy Processors,food_processing,Surat,Tier2,12.1,65,08F46WA7TRSFZ7,NTC
+121,Pioneer Naturals Pvt Ltd,food_processing,Bengaluru,Tier1,4.4,166,07R3R5RESYDQZ5,NTC
+122,Star Mills Pvt Ltd,textiles,Rajkot,Tier3,11.7,229,098NBHRVXSY0Z1,existing_customer
+123,Star Retail LLP,retail,Bengaluru,Tier1,17.4,76,07BFE00DWG7PZ4,existing_customer
+124,Sunrise Retail & Co.,retail,Pune,Tier2,1.3,164,09RWT8A1UQV7Z7,existing_customer
+125,Royal Retail Group,retail,Ahmedabad,Tier2,2.7,101,06TP971K88REZ4,existing_customer
+126,Star Works Pvt Ltd,manufacturing,Hyderabad,Tier1,13.0,241,33XKMY9Y8TZLZ1,existing_customer
+127,Royal Exports LLP,food_processing,Surat,Tier2,12.2,108,083TAEYG1FKJZ8,existing_customer
+128,Prime Exports Pvt Ltd,food_processing,Hyderabad,Tier1,14.7,28,08J23KY7P89LZ5,NTC
+129,Galaxy Textiles,textiles,Ahmedabad,Tier2,14.2,224,061UW28LGZGFZ5,existing_customer
+130,Sunrise Consultancy & Co.,services,Bengaluru,Tier1,2.8,151,06R7B7W2X4L2Z5,existing_customer
+131,Shree Mills Pvt Ltd,textiles,Agra,Tier3,17.2,135,08UPM6YMK8XSZ5,existing_customer
+132,Heritage Mills Pvt Ltd,textiles,Bengaluru,Tier1,16.3,159,27ZL78PUK63NZ8,NTB
+133,Shree Solutions Pvt Ltd,services,Jaipur,Tier2,3.9,133,27XHXHZ4G451Z4,existing_customer
+134,Shree Fabrics & Co.,textiles,Ahmedabad,Tier2,13.0,11,293UVHJPXQAYZ5,NTC
+135,Heritage Mfg & Co.,manufacturing,Hyderabad,Tier1,15.3,93,362LC2QPYSUEZ3,NTC
+136,Eagle Forge & Co.,manufacturing,Delhi,Tier1,16.0,249,29EAWU8L16MQZ6,NTB
+137,Shree Works,manufacturing,Delhi,Tier1,15.1,51,27479RUKCD0SZ3,NTC
+138,Swadeshi Stores Bros,retail,Ahmedabad,Tier2,11.3,232,09MYZFV38FL2Z7,NTC
+139,Galaxy Services Bros,services,Bengaluru,Tier1,13.3,226,062SDXCK46G0Z6,NTC
+140,Pioneer Mills Pvt Ltd,textiles,Rajkot,Tier3,14.7,150,27UU9S2NH20KZ4,existing_customer
+141,Eagle Mfg,manufacturing,Bengaluru,Tier1,12.1,219,291EFVV5E07BZ7,existing_customer
+142,Heritage Stores Bros,retail,Bengaluru,Tier1,12.2,134,0975BYD8XK1VZ5,NTC
+143,Star Consultancy Bros,services,Jaipur,Tier2,16.2,21,33TM5SSWTEFCZ6,existing_customer
+144,Royal Mart Bros,retail,Delhi,Tier1,13.1,32,060SSHF4ABVFZ6,NTB
+145,Star Weaves Group,textiles,Nagpur,Tier3,5.0,48,275038HWSSHPZ1,NTC
+146,Apex Forge Bros,manufacturing,Nagpur,Tier3,9.4,44,07HPDG5TQFDSZ6,existing_customer
+147,Royal Textiles Group,textiles,Rajkot,Tier3,2.6,125,2762YTNBUH32Z3,existing_customer
+148,Eagle Works & Co.,manufacturing,Rajkot,Tier3,2.8,124,36WUJA1ATTNGZ8,NTC
+149,Sunrise Ventures Bros,services,Ahmedabad,Tier2,10.7,68,06W9PGUUGVS9Z5,NTB
+150,Bharat Solutions Pvt Ltd,services,Pune,Tier2,8.3,181,0823WZBPX33SZ6,existing_customer
+151,Pioneer Weaves Group,textiles,Delhi,Tier1,11.2,187,360W83XQGY3KZ0,NTB
+152,Swadeshi Industries Pvt Ltd,manufacturing,Ahmedabad,Tier2,12.3,94,0792NPVT1CDKZ8,existing_customer
+153,Heritage Components Group,manufacturing,Bengaluru,Tier1,17.4,118,27JPDCL83853Z5,NTC
+154,Eagle Services,services,Rajkot,Tier3,4.8,88,0965SJP2HZ3QZ3,existing_customer
+155,Apex Forge & Co.,manufacturing,Bengaluru,Tier1,2.1,174,29SN6K8Z6SG1Z8,NTC
+156,Shree Traders & Co.,retail,Delhi,Tier1,6.7,201,09W1UBSXS965Z4,existing_customer
+157,Eagle Components Bros,manufacturing,Delhi,Tier1,2.7,136,27TPZF9ZRZAHZ5,existing_customer
+158,Galaxy Exports LLP,food_processing,Jaipur,Tier2,5.1,70,06GQQ1NPRV9ZZ8,NTC
+159,Eagle Agro Bros,food_processing,Rajkot,Tier3,7.2,39,27GS94T02LVVZ3,NTB
+160,Apex Stores LLP,retail,Bengaluru,Tier1,11.5,117,06NU3MPMZWVYZ5,existing_customer
+161,Shree Naturals Group,food_processing,Surat,Tier2,13.4,229,36R85X7QWP6CZ3,existing_customer
+162,National Naturals LLP,food_processing,Bengaluru,Tier1,11.1,103,09QGA0Y7ZCFDZ0,existing_customer
+163,Shree Consultancy Group,services,Pune,Tier2,9.7,23,29C7PH1RETFBZ3,existing_customer
+164,Star Naturals Pvt Ltd,food_processing,Varanasi,Tier3,10.0,71,29WR15QXU6SHZ0,existing_customer
+165,Sunrise Agro LLP,food_processing,Jaipur,Tier2,0.7,135,36RA78SAQKHAZ3,NTC
+166,Royal Services Bros,services,Varanasi,Tier3,3.4,190,33JQJ163ZK13Z4,NTB
+167,National Mills Bros,textiles,Bengaluru,Tier1,8.5,117,33LF8A9KEQADZ0,NTC
+168,Galaxy Traders LLP,retail,Bengaluru,Tier1,9.2,97,0748B2CRG434Z1,existing_customer
+169,Galaxy Traders Group,retail,Lucknow,Tier2,17.9,52,33SZLLXB7TJXZ1,NTC
+170,Modern Fabrics Pvt Ltd,textiles,Nagpur,Tier3,4.6,113,36VPJ8VZZF2JZ4,existing_customer
+171,Star Industries Pvt Ltd,manufacturing,Mumbai,Tier1,11.8,181,09H9213QGZNEZ8,NTC
+172,Prime Tech Group,services,Surat,Tier2,12.7,50,06MR5W5FUR3UZ4,NTB
+173,Eagle Mfg Pvt Ltd,manufacturing,Ahmedabad,Tier2,11.3,95,060YUPTSUWLXZ1,existing_customer
+174,Sri Works & Co.,manufacturing,Pune,Tier2,2.8,225,09GBXPSXWBH0Z0,existing_customer
+175,Star Enterprises LLP,retail,Pune,Tier2,11.7,94,274KBCL88D0UZ1,existing_customer
+176,Star Components,manufacturing,Surat,Tier2,3.6,193,072VYZQD2UTYZ5,existing_customer
+177,Sunrise Forge Bros,manufacturing,Jaipur,Tier2,10.1,85,084LJUNU1NR8Z0,existing_customer
+178,National Fabrics LLP,textiles,Rajkot,Tier3,2.9,229,33HL2837TVVDZ4,NTC
+179,Eagle Stores & Co.,retail,Bengaluru,Tier1,4.9,67,08VHCMSS6Z3DZ6,existing_customer
+180,Eagle Garments LLP,textiles,Surat,Tier2,14.2,237,08Q55HYWA2PLZ0,NTB
+181,Royal Components Bros,manufacturing,Jaipur,Tier2,4.4,14,07HKPECVBPCTZ7,existing_customer
+182,Prime Mart Group,retail,Varanasi,Tier3,9.0,168,33JKQZVDQNGMZ6,existing_customer
+183,Prime Agro Bros,food_processing,Bengaluru,Tier1,17.8,115,277HZF0C1JXFZ8,existing_customer
+184,Swadeshi Exports Pvt Ltd,food_processing,Mumbai,Tier1,8.7,86,33U1UX9ZYN6TZ2,NTB
+185,Sri Fabrics Bros,textiles,Hyderabad,Tier1,8.6,243,36Y7NDK6P9T0Z9,NTB
+186,Galaxy Ventures,services,Rajkot,Tier3,4.0,249,27B7LS1AZNL9Z9,NTC
+187,Sri Exports LLP,food_processing,Agra,Tier3,16.1,210,33F6YCN8WXHJZ1,existing_customer
+188,Bharat Exports Group,food_processing,Agra,Tier3,2.8,169,335LZTE99E77Z3,NTB
+189,Apex Industries LLP,manufacturing,Pune,Tier2,15.2,39,088L13X1FGEAZ9,NTC
+190,Royal Industries LLP,manufacturing,Hyderabad,Tier1,10.9,61,07ZSTW0N4SEGZ0,existing_customer
+191,Eagle Textiles & Co.,textiles,Varanasi,Tier3,12.2,53,29795SMRJPB1Z3,NTC
+192,Apex Foods Group,food_processing,Surat,Tier2,9.7,226,07R4B9TP0UTXZ0,existing_customer
+193,Pioneer Processors Group,food_processing,Jaipur,Tier2,5.5,44,27Z6RXDTGV6UZ3,existing_customer
+194,Swadeshi Naturals & Co.,food_processing,Ahmedabad,Tier2,16.2,231,36MY0F0D0XC0Z7,existing_customer
+195,Bharat Forge Group,manufacturing,Ahmedabad,Tier2,7.2,198,29FE2BL08KG6Z9,NTB
+196,Star Fabrics Group,textiles,Jaipur,Tier2,9.2,129,09JWSPCWJUXUZ8,NTC
+197,Sri Mills Group,textiles,Mumbai,Tier1,1.1,220,36MCD9FKYZVVZ9,existing_customer
+198,Heritage Components & Co.,manufacturing,Pune,Tier2,5.7,96,084CSE5MQHHBZ5,NTC
+199,Apex Forge Bros,manufacturing,Varanasi,Tier3,11.1,203,06JVX7WS0S36Z2,existing_customer
+200,Shree Agro Group,food_processing,Coimbatore,Tier3,8.6,205,08QMVXAGK2LTZ3,NTC

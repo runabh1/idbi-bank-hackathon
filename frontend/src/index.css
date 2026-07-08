@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    @apply bg-gray-950 text-gray-100 font-sans antialiased;
+    background: radial-gradient(ellipse at top left, #1a1040 0%, #0d0d1a 50%, #000818 100%);
+    min-height: 100vh;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track { background: #0d0d1a; }
+  ::-webkit-scrollbar-thumb { background: #4f52e6; border-radius: 3px; }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:border-white/20 hover:shadow-2xl;
+    &:hover { background: rgba(255,255,255,0.08); }
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold px-6 py-2.5 rounded-xl
+           transition-all duration-200 hover:from-brand-500 hover:to-brand-400 hover:shadow-lg hover:shadow-brand-600/30
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-secondary {
+    @apply bg-white/10 text-white font-medium px-5 py-2.5 rounded-xl border border-white/20
+           transition-all duration-200 hover:bg-white/15 hover:border-white/30 active:scale-95;
+  }
+
+  .btn-success {
+    @apply bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-semibold px-6 py-2.5 rounded-xl
+           transition-all duration-200 hover:from-emerald-500 hover:to-teal-400 hover:shadow-lg 
+           hover:shadow-emerald-600/30 active:scale-95;
+  }
+  
+  .tier-prime {
+    @apply bg-emerald-500/20 text-emerald-400 border border-emerald-500/30;
+  }
+  .tier-near-prime {
+    @apply bg-amber-500/20 text-amber-400 border border-amber-500/30;
+  }
+  .tier-sub-prime {
+    @apply bg-orange-500/20 text-orange-400 border border-orange-500/30;
+  }
+  .tier-decline {
+    @apply bg-red-500/20 text-red-400 border border-red-500/30;
+  }
+
+  .stat-card {
+    @apply glass-card p-5 flex flex-col gap-1;
+  }
+  
+  .input-field {
+    @apply bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white 
+           placeholder:text-gray-500 focus:outline-none focus:border-brand-500/60
+           transition-all duration-200;
+  }
+
+  .section-title {
+    @apply font-display text-lg font-semibold text-white/90;
+  }
+
+  .label-text {
+    @apply text-xs font-medium text-gray-400 uppercase tracking-wider;
+  }
+
+  /* ── Rendered Markdown (LLM output) ─────────────────────────────── */
+  .markdown-content {
+    @apply text-gray-300 text-sm leading-relaxed;
+  }
+  .markdown-content p {
+    @apply mb-3;
+  }
+  .markdown-content p:last-child {
+    @apply mb-0;
+  }
+  .markdown-content strong, .markdown-content b {
+    @apply font-bold text-white;
+  }
+  .markdown-content em, .markdown-content i {
+    @apply italic text-gray-200;
+  }
+  .markdown-content ol {
+    @apply list-decimal list-outside pl-5 space-y-2 my-3;
+  }
+  .markdown-content ul {
+    @apply list-disc list-outside pl-5 space-y-2 my-3;
+  }
+  .markdown-content li {
+    @apply text-gray-300;
+  }
+  .markdown-content li strong {
+    @apply text-white;
+  }
+  .markdown-content h1, .markdown-content h2, .markdown-content h3 {
+    @apply font-semibold text-white mt-4 mb-2;
+  }
+  .markdown-content code {
+    @apply bg-white/10 rounded px-1.5 py-0.5 text-xs font-mono text-brand-300;
+  }
+  .markdown-content blockquote {
+    @apply border-l-2 border-brand-500/50 pl-3 italic text-gray-400 my-2;
+  }
+  /* Compact variant for chat bubbles */
+  .markdown-content-compact p {
+    @apply mb-1.5;
+  }
+  .markdown-content-compact ol,
+  .markdown-content-compact ul {
+    @apply my-1 space-y-1;
+  }
+}

@@ -1,0 +1,55 @@
+// i18n translations
+export const translations = {
+  en: {
+    myScore: "My Financial Health Score",
+    yourScore: "Your CreditPulse Score",
+    riskTier: "Risk Tier",
+    improveTips: "3 Things to Improve in 90 Days",
+    revenueStability: "Revenue Stability",
+    cashflowHealth: "Cashflow Health",
+    bankingDiscipline: "Banking Discipline",
+    compliance: "GST Compliance",
+    employmentStability: "Employment Stability",
+    fetchData: "Fetch via Account Aggregator",
+    applyLoan: "Apply for Loan",
+    language: "Language",
+    english: "English",
+    hindi: "Hindi",
+    loading: "Loading…",
+    poweredBy: "Powered by CreditPulse AI",
+    verifiedData: "Verified alternate data sources",
+    sector: "Sector",
+    region: "Region",
+    yearsActive: "Years Active",
+    entityType: "Entity Type",
+    back: "Back",
+  },
+  hi: {
+    myScore: "मेरा वित्तीय स्वास्थ्य स्कोर",
+    yourScore: "आपका CreditPulse स्कोर",
+    riskTier: "जोखिम श्रेणी",
+    improveTips: "90 दिनों में सुधार के 3 तरीके",
+    revenueStability: "राजस्व स्थिरता",
+    cashflowHealth: "नकदी प्रवाह स्वास्थ्य",
+    bankingDiscipline: "बैंकिंग अनुशासन",
+    compliance: "GST अनुपालन",
+    employmentStability: "रोजगार स्थिरता",
+    fetchData: "अकाउंट एग्रीगेटर से डेटा प्राप्त करें",
+    applyLoan: "ऋण के लिए आवेदन करें",
+    language: "भाषा",
+    english: "अंग्रेज़ी",
+    hindi: "हिंदी",
+    loading: "लोड हो रहा है…",
+    poweredBy: "CreditPulse AI द्वारा संचालित",
+    verifiedData: "सत्यापित वैकल्पिक डेटा स्रोत",
+    sector: "क्षेत्र",
+    region: "क्षेत्र",
+    yearsActive: "सक्रिय वर्ष",
+    entityType: "संस्था प्रकार",
+    back: "वापस",
+  }
+}
+
+export function useTranslation(lang) {
+  return translations[lang] || translations.en
+}
