@@ -11,7 +11,8 @@ from typing import Optional
 import joblib
 import numpy as np
 
-MODEL_PATH = Path(__file__).parent / "model_artifacts" / "xgb_model.pkl"
+MODEL_PATH = Path(__file__).parent / "model_artifacts" / "xgb_model.ubj"
+MODEL_PATH_PKL = Path(__file__).parent / "model_artifacts" / "xgb_model.pkl"  # legacy fallback
 
 # Weight config (must sum to 1.0)
 WEIGHTS = {
@@ -103,12 +104,23 @@ def assign_risk_tier(score: float) -> str:
 
 
 def _load_model():
-    """Load XGBoost model (returns None if not yet trained)."""
+    """
+    Load XGBoost model. Tries native .ubj format first (no sklearn needed),
+    falls back to joblib .pkl for backward compatibility.
+    """
     if MODEL_PATH.exists():
         try:
-            return joblib.load(MODEL_PATH)
+            import xgboost as xgb
+            booster = xgb.Booster()
+            booster.load_model(str(MODEL_PATH))
+            return booster
         except Exception:
-            return None
+            pass
+    if MODEL_PATH_PKL.exists():
+        try:
+            return joblib.load(MODEL_PATH_PKL)
+        except Exception:
+            pass
     return None
 
 
@@ -155,7 +167,7 @@ def compute_score(
     if _MODEL is not None:
         try:
             # 11-feature vector matching the trained model
-            feats = np.array([[
+            feats = np.array([
                 sub_scores["revenue_stability"],       # revenue_stability_score
                 sub_scores["cashflow_health"],          # cashflow_health_score
                 sub_scores["banking_discipline"],       # banking_discipline_score
@@ -167,9 +179,18 @@ def compute_score(
                 float(aa_total_emi_bounces),            # aa_total_emi_bounces
                 float(epfo_on_time_pct),                # epfo_on_time_pct
                 float(upi_avg_inflow),                  # upi_avg_inflow
-            ]])
+            ], dtype=np.float32).reshape(1, -1)
+
+            import xgboost as xgb
+            if isinstance(_MODEL, xgb.Booster):
+                # Native booster — predict returns raw probability for binary:logistic
+                dmat = xgb.DMatrix(feats)
+                prob_default = float(_MODEL.predict(dmat)[0])
+            else:
+                # Legacy XGBClassifier (joblib pickle) — uses predict_proba
+                prob_default = float(_MODEL.predict_proba(feats)[0][1])
+
             # Probability of NOT defaulting -> higher = better creditworthiness
-            prob_default = float(_MODEL.predict_proba(feats)[0][1])
             ml_prob = 1.0 - prob_default
         except Exception:
             ml_prob = None

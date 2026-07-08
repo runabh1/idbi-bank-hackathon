@@ -26,20 +26,30 @@ GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
 # ═══════════════════════════════════════════════════════════════════════════
 
 def _call_llm(prompt: str, max_tokens: int = 500) -> Optional[str]:
-    """Call the configured LLM provider. Returns None on failure."""
+    """
+    Call the configured LLM provider. Returns None on failure.
+    Gemini is called via REST (httpx) instead of the google-generativeai SDK
+    to avoid bundling grpcio/protobuf compiled extensions (~150 MB) on Vercel.
+    """
     try:
         if LLM_PROVIDER == "gemini" and GEMINI_API_KEY:
-            import google.generativeai as genai
-            genai.configure(api_key=GEMINI_API_KEY)
-            model = genai.GenerativeModel(
-                model_name=GEMINI_MODEL,
-                generation_config=genai.GenerationConfig(
-                    max_output_tokens=max_tokens,
-                    temperature=0.7,
-                ),
+            # Direct REST call — no grpcio/protobuf needed
+            import httpx
+            url = (
+                f"https://generativelanguage.googleapis.com/v1beta/models/"
+                f"{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
             )
-            response = model.generate_content(prompt)
-            return response.text.strip()
+            payload = {
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {
+                    "maxOutputTokens": max_tokens,
+                    "temperature": 0.7,
+                },
+            }
+            resp = httpx.post(url, json=payload, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
+            return data["candidates"][0]["content"]["parts"][0]["text"].strip()
 
         elif LLM_PROVIDER == "openai" and OPENAI_API_KEY:
             import openai
