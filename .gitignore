@@ -31,7 +31,6 @@ dist-ssr/
 
 # Database
 *.sqlite3
-*.db
 
 # OS generated files
 .DS_Store
