@@ -1,7 +1,7 @@
 {
-  "threshold": 0.45,
-  "f1_at_threshold": 0.5,
-  "rationale": "Threshold 0.45 maximises F1 on held-out test set. In credit risk, a missed default costs the bank far more than a false positive costs an applicant, so we tuned recall-weighted F1, not raw accuracy.",
+  "threshold": 0.5,
+  "f1_at_threshold": 0.5825,
+  "rationale": "Threshold 0.5 maximises F1 on held-out test set. In credit risk, a missed default costs the bank far more than a false positive costs an applicant, so we tuned recall-weighted F1, not raw accuracy.",
   "features": [
     "revenue_stability_score",
     "cashflow_health_score",
@@ -9,5 +9,10 @@
     "compliance_score",
     "employment_stability_score"
   ],
-  "n_features": 5
+  "n_features": 5,
+  "best_xgb_params": {
+    "max_depth": 3,
+    "n_estimators": 100,
+    "learning_rate": 0.05
+  }
 }

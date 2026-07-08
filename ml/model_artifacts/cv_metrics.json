@@ -1,0 +1,46 @@
+{
+  "logistic_regression": {
+    "accuracy": {
+      "mean": 0.828,
+      "std": 0.0291
+    },
+    "precision": {
+      "mean": 0.6254,
+      "std": 0.0525
+    },
+    "recall": {
+      "mean": 0.723,
+      "std": 0.0626
+    },
+    "f1": {
+      "mean": 0.6704,
+      "std": 0.0553
+    },
+    "roc_auc": {
+      "mean": 0.8377,
+      "std": 0.0187
+    }
+  },
+  "xgboost": {
+    "accuracy": {
+      "mean": 0.838,
+      "std": 0.0299
+    },
+    "precision": {
+      "mean": 0.6668,
+      "std": 0.0658
+    },
+    "recall": {
+      "mean": 0.6695,
+      "std": 0.0411
+    },
+    "f1": {
+      "mean": 0.6678,
+      "std": 0.0536
+    },
+    "roc_auc": {
+      "mean": 0.8198,
+      "std": 0.0187
+    }
+  }
+}

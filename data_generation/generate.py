@@ -1,6 +1,6 @@
 """
 CreditPulse - Synthetic Data Generator (Phase 1)
-Generates 200 MSME applicants with 12 months of history across 5 data sources.
+Generates 1000 MSME applicants with 12 months of history across 5 data sources.
 Produces 6 CSVs and loads them into creditpulse.db (SQLite).
 """
 
@@ -24,7 +24,7 @@ HERE = Path(__file__).parent
 DB_PATH = HERE / "creditpulse.db"
 
 # ── Config ───────────────────────────────────────────────────────────────────
-N_APPLICANTS = 200
+N_APPLICANTS = 1000
 MONTHS = 12  # months of history
 START_MONTH = date(2024, 1, 1)
 
@@ -355,6 +355,13 @@ def generate_labels(applicants_df, profiles, gst_df, upi_df, aa_df, epfo_df):
     """
     Compute a logistic-regression-style default probability from real signals.
     Target ~15-20% default rate.
+
+    Signal improvements (v2):
+    - Increased weights on core risk features relative to noise.
+    - Reduced noise std from 0.40 → 0.25 for a cleaner signal.
+    - Added 2 interaction terms:
+        (a) overdraft_days × late_gst_pct  — banking stress + compliance failure
+        (b) avg_inflow_vol × declining_turnover — cashflow chaos + revenue drop
     """
     aids = applicants_df["applicant_id"].values
     rows = []
@@ -384,19 +391,33 @@ def generate_labels(applicants_df, profiles, gst_df, upi_df, aa_df, epfo_df):
         emp_trend = (e["employee_count"].iloc[-1] - e["employee_count"].iloc[0]) \
                     / (e["employee_count"].iloc[0] + 1)
 
-        # Logit (higher = riskier) — tuned for ~18-22% default rate
+        # ── Interaction effects ──────────────────────────────────────────
+        # (a) High overdraft days AND chronic GST lateness → compounding risk
+        #     Both scaled to [0,1] range before multiplying so the interaction
+        #     only fires meaningfully when BOTH signals are elevated.
+        overdraft_norm = min(avg_overdraft / 10.0, 1.0)   # 0-1 (10+ days = max)
+        interaction_bank_gst = overdraft_norm * late_pct   # max=1 when both extreme
+
+        # (b) High cashflow volatility AND declining turnover → stress compounds
+        inflow_vol_norm = min(avg_inflow_vol / 0.4, 1.0)  # 0-1 (0.4+ = max)
+        declining_flag = float(p["declining_turnover"])   # 0 or 1
+        interaction_cashflow_rev = inflow_vol_norm * declining_flag
+
+        # ── Logit (higher = riskier) — tuned for ~15-20% default rate ───
         logit = (
-            -1.8                         # intercept => ~18% base rate
-            + 0.06 * avg_delay           # late filing (stronger)
-            + 1.80 * late_pct            # chronic lateness (stronger)
-            + 1.20 * avg_inflow_vol      # cashflow volatility (stronger)
-            + 2.00 * max(0, avg_ratio - 0.80)  # high outflow ratio (lower trigger)
-            + 0.20 * avg_overdraft       # overdraft days
-            + 0.60 * (total_bounces / 12)       # bounce rate (stronger)
-            + (-1.50) * epfo_on_time_pct         # good EPFO => protective (stronger)
-            + (-1.00) * max(0, -emp_trend)       # declining employment
-            + 0.80 * turnover_cv                 # revenue instability (stronger)
-            + np.random.normal(0, 0.40)          # noise (slightly tighter)
+            -2.0                               # intercept (keeps base rate ~17%)
+            + 0.07 * avg_delay                 # late filing
+            + 2.20 * late_pct                  # chronic GST lateness
+            + 1.60 * avg_inflow_vol            # cashflow volatility
+            + 2.50 * max(0, avg_ratio - 0.80)  # high outflow ratio
+            + 0.28 * avg_overdraft             # overdraft days
+            + 0.80 * (total_bounces / 12)      # EMI bounce rate
+            + (-2.00) * epfo_on_time_pct       # good EPFO → protective
+            + (-1.40) * max(0, -emp_trend)     # declining headcount
+            + 1.00 * turnover_cv              # revenue instability
+            + 2.50 * interaction_bank_gst      # INTERACTION: overdraft × GST late
+            + 2.00 * interaction_cashflow_rev  # INTERACTION: vol cashflow × rev decline
+            + np.random.normal(0, 0.25)        # reduced noise for cleaner signal
         )
 
         prob = float(expit(logit))
