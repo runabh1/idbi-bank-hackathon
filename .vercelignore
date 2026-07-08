@@ -1,0 +1,18 @@
+# Exclude training & data-generation code — not needed at runtime on Vercel
+data_generation/
+ml/train_model.py
+ml/feature_engineering.py
+ml/save_features.py
+ml/features.csv
+
+# Exclude test files
+tests/
+test_api.py
+pytest.ini
+
+# Exclude docs and notebooks
+docs/
+
+# Exclude local dev files
+.env
+check_db.py
