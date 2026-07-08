@@ -8,7 +8,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
-import joblib
 import numpy as np
 
 MODEL_PATH = Path(__file__).parent / "model_artifacts" / "xgb_model.ubj"
@@ -107,10 +106,12 @@ def _load_model():
     """
     Load XGBoost model. Tries native .ubj format first (no sklearn needed),
     falls back to joblib .pkl for backward compatibility.
+    Returns None if xgboost/joblib not installed (Vercel prod) — scoring
+    engine will use the deterministic formula only.
     """
     if MODEL_PATH.exists():
         try:
-            import xgboost as xgb
+            import xgboost as xgb  # optional — not in prod deps
             booster = xgb.Booster()
             booster.load_model(str(MODEL_PATH))
             return booster
@@ -118,6 +119,7 @@ def _load_model():
             pass
     if MODEL_PATH_PKL.exists():
         try:
+            import joblib  # optional — not in prod deps
             return joblib.load(MODEL_PATH_PKL)
         except Exception:
             pass
