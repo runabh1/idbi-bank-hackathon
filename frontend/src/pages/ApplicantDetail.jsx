@@ -254,8 +254,40 @@ export default function ApplicantDetail() {
   }
 
   if (!app) return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="w-10 h-10 border-4 border-brand-500 border-t-transparent rounded-full animate-spin" />
+    <div className="space-y-6 animate-fade-in p-6 max-w-7xl mx-auto">
+      {/* Header Skeleton */}
+      <div className="flex items-start justify-between mb-8">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-xl bg-gray-200 animate-pulse"></div>
+          <div>
+            <div className="h-8 w-64 bg-gray-200 rounded-lg animate-pulse mb-2"></div>
+            <div className="h-4 w-48 bg-gray-100 rounded-md animate-pulse"></div>
+          </div>
+        </div>
+        <div className="flex gap-2">
+          <div className="h-10 w-32 bg-gray-200 rounded-xl animate-pulse"></div>
+          <div className="h-10 w-32 bg-gray-200 rounded-xl animate-pulse"></div>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Left Column Skeleton */}
+        <div className="space-y-5">
+          <div className="premium-card p-6 h-[160px] bg-gray-50/50 animate-pulse flex flex-col justify-between">
+            <div className="flex justify-between"><div className="w-24 h-5 bg-gray-200 rounded"></div><div className="w-16 h-6 bg-gray-200 rounded-full"></div></div>
+            <div className="w-32 h-10 bg-gray-200 rounded mt-4"></div>
+          </div>
+          <div className="premium-card p-6 h-[300px] bg-gray-50/50 animate-pulse"></div>
+          <div className="premium-card p-5 h-[340px] bg-gray-50/50 animate-pulse"></div>
+        </div>
+
+        {/* Right Column Skeleton */}
+        <div className="lg:col-span-2 space-y-5">
+          <div className="premium-card p-6 h-36 bg-gray-50/50 animate-pulse"></div>
+          <div className="premium-card p-6 h-[350px] bg-gray-50/50 animate-pulse"></div>
+          <div className="premium-card p-6 h-64 bg-gray-50/50 animate-pulse"></div>
+        </div>
+      </div>
     </div>
   )
 
