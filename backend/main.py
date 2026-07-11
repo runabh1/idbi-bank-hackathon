@@ -546,10 +546,16 @@ def chat(req: ChatRequest, conn=Depends(get_db)):
     }
 
 
+_PORTFOLIO_CACHE = None
+
 @app.get("/portfolio")
 def portfolio(conn=Depends(get_db)):
     """Aggregated stats: score distribution, risk tiers, sector/region breakdown."""
     import traceback
+    global _PORTFOLIO_CACHE
+    if _PORTFOLIO_CACHE is not None:
+        return _PORTFOLIO_CACHE
+
     try:
         rows = conn.execute(
             """SELECT a.applicant_id, a.sector, a.region, a.tier, a.entity_type,
@@ -607,7 +613,7 @@ def portfolio(conn=Depends(get_db)):
             except Exception:
                 pass
 
-        return {
+        result = {
             "total_applicants": len(all_scores),
             "avg_score": round(sum(all_scores) / len(all_scores), 2) if all_scores else 0,
             "tier_distribution": tier_counts,
@@ -616,6 +622,8 @@ def portfolio(conn=Depends(get_db)):
             "avg_score_by_region": avg_by_region,
             "model_metrics": model_metrics,
         }
+        _PORTFOLIO_CACHE = result
+        return result
     except Exception as e:
         logger.error(f"[/portfolio] FAILED: {e}\n{traceback.format_exc()}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -714,21 +722,27 @@ def trend(applicant_id: int, conn=Depends(get_db)):
     from scoring_engine import compute_score as _compute_score
 
     # Load monthly raw data for this applicant
-    gst = pd.read_sql(
+    def fetch_df(query, params):
+        rows = conn.execute(query, params).fetchall()
+        if not rows:
+            return pd.DataFrame()
+        return pd.DataFrame([dict(r) for r in rows])
+
+    gst = fetch_df(
         "SELECT * FROM gst_records WHERE applicant_id=? ORDER BY year,month",
-        conn, params=(applicant_id,)
+        (applicant_id,)
     )
-    upi = pd.read_sql(
+    upi = fetch_df(
         "SELECT * FROM upi_transactions WHERE applicant_id=? ORDER BY year,month",
-        conn, params=(applicant_id,)
+        (applicant_id,)
     )
-    aa = pd.read_sql(
+    aa = fetch_df(
         "SELECT * FROM aa_bank_data WHERE applicant_id=? ORDER BY year,month",
-        conn, params=(applicant_id,)
+        (applicant_id,)
     )
-    epfo = pd.read_sql(
+    epfo = fetch_df(
         "SELECT * FROM epfo_records WHERE applicant_id=? ORDER BY year,month",
-        conn, params=(applicant_id,)
+        (applicant_id,)
     )
 
     if gst.empty:
