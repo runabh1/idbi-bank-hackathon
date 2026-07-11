@@ -11,6 +11,8 @@ import { RiskBadge } from '../components/RiskBadge'
 import { ScoreGauge } from '../components/ScoreGauge'
 import { useTranslation } from '../i18n'
 import { useToast } from '../components/Toast'
+import { useAuth } from '../AuthContext'
+import { Navigate } from 'react-router-dom'
 
 function ProgressCard({ label, value, description }) {
   const color = value >= 75 ? '#10b981' : value >= 55 ? '#f59e0b' : value >= 35 ? '#f97316' : '#ef4444'
@@ -35,6 +37,12 @@ export default function OwnerView() {
   const [lang, setLang] = useState('en')
   const t = useTranslation(lang)
   const addToast = useToast()
+  const { user } = useAuth()
+
+  // Data Privacy check: If user is an applicant, they can only view their own score.
+  if (user && user.role === 'applicant' && String(user.id) !== String(id)) {
+    return <Navigate to={`/my-score/${user.id}`} replace />
+  }
 
   useEffect(() => {
     getApplicant(id).then(setApp)
