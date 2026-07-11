@@ -221,38 +221,44 @@ _APPLICANTS_CACHE = None
 @app.get("/applicants")
 def list_applicants(conn=Depends(get_db)):
     """List all applicants with score, risk tier, sector, region."""
+    import traceback
     global _APPLICANTS_CACHE
-    if _APPLICANTS_CACHE is not None:
+    if _APPLICANTS_CACHE is not None and len(_APPLICANTS_CACHE) > 0:
         return _APPLICANTS_CACHE
 
-    rows = conn.execute(
-        """SELECT a.applicant_id, a.business_name, a.sector, a.region, a.tier,
-                  a.entity_type, a.years_in_business, a.defaulted_12m,
-                  f.revenue_stability_score, f.cashflow_health_score,
-                  f.banking_discipline_score, f.compliance_score,
-                  f.employment_stability_score
-           FROM applicants a
-           LEFT JOIN applicant_features f ON a.applicant_id = f.applicant_id
-           ORDER BY a.applicant_id"""
-    ).fetchall()
+    try:
+        rows = conn.execute(
+            """SELECT a.applicant_id, a.business_name, a.sector, a.region, a.tier,
+                      a.entity_type, a.years_in_business, a.defaulted_12m,
+                      f.revenue_stability_score, f.cashflow_health_score,
+                      f.banking_discipline_score, f.compliance_score,
+                      f.employment_stability_score
+               FROM applicants a
+               LEFT JOIN applicant_features f ON a.applicant_id = f.applicant_id
+               ORDER BY a.applicant_id"""
+        ).fetchall()
 
-    result = []
-    for row in rows:
-        d = dict(row)
-        score_r = compute_score(
-            applicant_id=d["applicant_id"],
-            revenue_stability=d.get("revenue_stability_score") or 50,
-            cashflow_health=d.get("cashflow_health_score") or 50,
-            banking_discipline=d.get("banking_discipline_score") or 50,
-            compliance=d.get("compliance_score") or 50,
-            employment_stability=d.get("employment_stability_score") or 50,
-        )
-        d["blended_score"] = score_r.blended_score
-        d["risk_tier"] = score_r.risk_tier
-        result.append(d)
+        result = []
+        for row in rows:
+            d = dict(row)
+            score_r = compute_score(
+                applicant_id=d["applicant_id"],
+                revenue_stability=d.get("revenue_stability_score") or 50,
+                cashflow_health=d.get("cashflow_health_score") or 50,
+                banking_discipline=d.get("banking_discipline_score") or 50,
+                compliance=d.get("compliance_score") or 50,
+                employment_stability=d.get("employment_stability_score") or 50,
+            )
+            d["blended_score"] = score_r.blended_score
+            d["risk_tier"] = score_r.risk_tier
+            result.append(d)
 
-    _APPLICANTS_CACHE = result
-    return result
+        if len(result) > 0:
+            _APPLICANTS_CACHE = result
+        return result
+    except Exception as e:
+        logger.error(f"[/applicants] FAILED: {e}\n{traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/applicants/{applicant_id}")
@@ -531,71 +537,76 @@ def chat(req: ChatRequest, conn=Depends(get_db)):
 @app.get("/portfolio")
 def portfolio(conn=Depends(get_db)):
     """Aggregated stats: score distribution, risk tiers, sector/region breakdown."""
-    rows = conn.execute(
-        """SELECT a.applicant_id, a.sector, a.region, a.tier, a.entity_type,
-                  f.revenue_stability_score, f.cashflow_health_score,
-                  f.banking_discipline_score, f.compliance_score,
-                  f.employment_stability_score
-           FROM applicants a
-           LEFT JOIN applicant_features f ON a.applicant_id = f.applicant_id"""
-    ).fetchall()
+    import traceback
+    try:
+        rows = conn.execute(
+            """SELECT a.applicant_id, a.sector, a.region, a.tier, a.entity_type,
+                      f.revenue_stability_score, f.cashflow_health_score,
+                      f.banking_discipline_score, f.compliance_score,
+                      f.employment_stability_score
+               FROM applicants a
+               LEFT JOIN applicant_features f ON a.applicant_id = f.applicant_id"""
+        ).fetchall()
 
-    all_scores = []
-    tier_counts = {"Prime": 0, "Near-Prime": 0, "Sub-Prime": 0, "Decline": 0}
-    sector_scores = {}
-    region_scores = {}
+        all_scores = []
+        tier_counts = {"Prime": 0, "Near-Prime": 0, "Sub-Prime": 0, "Decline": 0}
+        sector_scores = {}
+        region_scores = {}
 
-    for row in rows:
-        d = dict(row)
-        sr = compute_score(
-            applicant_id=d["applicant_id"],
-            revenue_stability=d.get("revenue_stability_score") or 50,
-            cashflow_health=d.get("cashflow_health_score") or 50,
-            banking_discipline=d.get("banking_discipline_score") or 50,
-            compliance=d.get("compliance_score") or 50,
-            employment_stability=d.get("employment_stability_score") or 50,
-        )
-        score = sr.blended_score
-        tier = sr.risk_tier
-        all_scores.append(score)
-        tier_counts[tier] = tier_counts.get(tier, 0) + 1
+        for row in rows:
+            d = dict(row)
+            sr = compute_score(
+                applicant_id=d["applicant_id"],
+                revenue_stability=d.get("revenue_stability_score") or 50,
+                cashflow_health=d.get("cashflow_health_score") or 50,
+                banking_discipline=d.get("banking_discipline_score") or 50,
+                compliance=d.get("compliance_score") or 50,
+                employment_stability=d.get("employment_stability_score") or 50,
+            )
+            score = sr.blended_score
+            tier = sr.risk_tier
+            all_scores.append(score)
+            tier_counts[tier] = tier_counts.get(tier, 0) + 1
 
-        sec = d.get("sector", "unknown")
-        sector_scores.setdefault(sec, []).append(score)
+            sec = d.get("sector", "unknown")
+            sector_scores.setdefault(sec, []).append(score)
 
-        reg = d.get("tier", "unknown")
-        region_scores.setdefault(reg, []).append(score)
+            reg = d.get("tier", "unknown")
+            region_scores.setdefault(reg, []).append(score)
 
-    avg_by_sector = {k: round(sum(v) / len(v), 2) for k, v in sector_scores.items()}
-    avg_by_region = {k: round(sum(v) / len(v), 2) for k, v in region_scores.items()}
+        avg_by_sector = {k: round(sum(v) / len(v), 2) for k, v in sector_scores.items()}
+        avg_by_region = {k: round(sum(v) / len(v), 2) for k, v in region_scores.items()}
 
-    # Score distribution buckets (0-10, 10-20, ... 90-100)
-    import numpy as np
-    hist, bin_edges = np.histogram(all_scores, bins=10, range=(0, 100))
-    distribution = [
-        {"range": f"{int(bin_edges[i])}-{int(bin_edges[i+1])}", "count": int(hist[i])}
-        for i in range(len(hist))
-    ]
+        # Score distribution buckets (0-10, 10-20, ... 90-100)
+        import numpy as np
+        hist, bin_edges = np.histogram(all_scores, bins=10, range=(0, 100))
+        distribution = [
+            {"range": f"{int(bin_edges[i])}-{int(bin_edges[i+1])}", "count": int(hist[i])}
+            for i in range(len(hist))
+        ]
 
-    # Load model metrics if available
-    metrics_path = ROOT / "ml" / "model_artifacts" / "model_metrics.csv"
-    model_metrics = None
-    if metrics_path.exists():
-        try:
-            m = pd.read_csv(metrics_path)
-            model_metrics = m.to_dict(orient="records")
-        except Exception:
-            pass
+        # Load model metrics if available
+        metrics_path = ROOT / "ml" / "model_artifacts" / "model_metrics.csv"
+        model_metrics = None
+        if metrics_path.exists():
+            try:
+                m = pd.read_csv(metrics_path)
+                model_metrics = m.to_dict(orient="records")
+            except Exception:
+                pass
 
-    return {
-        "total_applicants": len(all_scores),
-        "avg_score": round(sum(all_scores) / len(all_scores), 2) if all_scores else 0,
-        "tier_distribution": tier_counts,
-        "score_distribution": distribution,
-        "avg_score_by_sector": avg_by_sector,
-        "avg_score_by_region": avg_by_region,
-        "model_metrics": model_metrics,
-    }
+        return {
+            "total_applicants": len(all_scores),
+            "avg_score": round(sum(all_scores) / len(all_scores), 2) if all_scores else 0,
+            "tier_distribution": tier_counts,
+            "score_distribution": distribution,
+            "avg_score_by_sector": avg_by_sector,
+            "avg_score_by_region": avg_by_region,
+            "model_metrics": model_metrics,
+        }
+    except Exception as e:
+        logger.error(f"[/portfolio] FAILED: {e}\n{traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/consent/{applicant_id}")

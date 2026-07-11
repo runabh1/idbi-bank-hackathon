@@ -14,7 +14,7 @@ export default function Navbar() {
   const { user, logout } = useAuth()
   
   const handleLogout = () => {
-    navigate('/')
+    navigate('/login')
     setTimeout(() => {
       logout()
     }, 0)
