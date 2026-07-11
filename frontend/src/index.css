@@ -8,8 +8,7 @@
   }
   
   body {
-    @apply bg-gray-950 text-gray-100 font-sans antialiased;
-    background: radial-gradient(ellipse at top left, #1a1040 0%, #0d0d1a 50%, #000818 100%);
+    @apply bg-[#F7F8FA] text-slate-800 font-sans antialiased;
     min-height: 100vh;
   }
 
@@ -31,16 +30,25 @@
     @apply glass-card transition-all duration-300 hover:border-white/20 hover:shadow-2xl;
     &:hover { background: rgba(255,255,255,0.08); }
   }
+
+  .premium-card {
+    @apply bg-white border border-gray-100/80 rounded-3xl;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+  }
+  
+  .premium-card-hover {
+    @apply premium-card transition-all duration-300 hover:shadow-xl hover:shadow-gray-200/50 hover:-translate-y-1 hover:border-gray-200;
+  }
   
   .btn-primary {
-    @apply bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold px-6 py-2.5 rounded-xl
-           transition-all duration-200 hover:from-brand-500 hover:to-brand-400 hover:shadow-lg hover:shadow-brand-600/30
+    @apply bg-black text-white font-medium px-6 py-2.5 rounded-full
+           transition-all duration-200 hover:bg-gray-800 hover:shadow-md
            active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   
   .btn-secondary {
-    @apply bg-white/10 text-white font-medium px-5 py-2.5 rounded-xl border border-white/20
-           transition-all duration-200 hover:bg-white/15 hover:border-white/30 active:scale-95;
+    @apply bg-white text-gray-700 font-medium px-5 py-2.5 rounded-full border border-gray-200
+           transition-all duration-200 hover:bg-gray-50 hover:border-gray-300 active:scale-95;
   }
 
   .btn-success {
@@ -50,30 +58,30 @@
   }
   
   .tier-prime {
-    @apply bg-emerald-500/20 text-emerald-400 border border-emerald-500/30;
+    @apply bg-emerald-50 text-emerald-700 border border-emerald-200;
   }
   .tier-near-prime {
-    @apply bg-amber-500/20 text-amber-400 border border-amber-500/30;
+    @apply bg-amber-50 text-amber-700 border border-amber-200;
   }
   .tier-sub-prime {
-    @apply bg-orange-500/20 text-orange-400 border border-orange-500/30;
+    @apply bg-orange-50 text-orange-700 border border-orange-200;
   }
   .tier-decline {
-    @apply bg-red-500/20 text-red-400 border border-red-500/30;
+    @apply bg-red-50 text-red-700 border border-red-200;
   }
 
   .stat-card {
-    @apply glass-card p-5 flex flex-col gap-1;
+    @apply premium-card p-6 flex flex-col gap-1;
   }
   
   .input-field {
-    @apply bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white 
-           placeholder:text-gray-500 focus:outline-none focus:border-brand-500/60
+    @apply bg-white border border-gray-200 rounded-full px-5 py-2.5 text-gray-800 
+           placeholder:text-gray-400 focus:outline-none focus:border-gray-400 focus:ring-4 focus:ring-gray-100
            transition-all duration-200;
   }
 
   .section-title {
-    @apply font-display text-lg font-semibold text-white/90;
+    @apply font-display text-xl font-semibold text-gray-900 tracking-tight;
   }
 
   .label-text {

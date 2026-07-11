@@ -66,39 +66,42 @@ export default function Dashboard() {
 
   const tierDist = portfolio?.tier_distribution || {}
   const tierCards = [
-    { tier: 'Prime', count: tierDist.Prime || 0, icon: CheckCircle, color: 'text-emerald-400' },
-    { tier: 'Near-Prime', count: tierDist['Near-Prime'] || 0, icon: TrendingUp, color: 'text-amber-400' },
-    { tier: 'Sub-Prime', count: tierDist['Sub-Prime'] || 0, icon: AlertTriangle, color: 'text-orange-400' },
-    { tier: 'Decline', count: tierDist.Decline || 0, icon: AlertTriangle, color: 'text-red-400' },
+    { tier: 'Prime', count: tierDist.Prime || 0, icon: CheckCircle, color: 'text-emerald-500', bgColor: 'bg-emerald-50' },
+    { tier: 'Near-Prime', count: tierDist['Near-Prime'] || 0, icon: TrendingUp, color: 'text-amber-500', bgColor: 'bg-amber-50' },
+    { tier: 'Sub-Prime', count: tierDist['Sub-Prime'] || 0, icon: AlertTriangle, color: 'text-orange-500', bgColor: 'bg-orange-50' },
+    { tier: 'Decline', count: tierDist.Decline || 0, icon: AlertTriangle, color: 'text-red-500', bgColor: 'bg-red-50' },
   ]
 
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
-      <div>
-        <h1 className="font-display text-3xl font-bold text-white">Loan Officer Dashboard</h1>
-        <p className="text-gray-400 mt-1">
-          {portfolio?.total_applicants} MSME applicants · Avg score: <span className="text-brand-400 font-semibold">{portfolio?.avg_score}</span>
-        </p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="font-display text-4xl font-bold text-gray-900 tracking-tight">Dashboard</h1>
+          <p className="text-gray-500 mt-2 text-sm">
+            {portfolio?.total_applicants} Total Applicants · Average Score: <span className="text-gray-900 font-semibold">{portfolio?.avg_score}</span>
+          </p>
+        </div>
       </div>
 
       {/* KPI cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {tierCards.map(({ tier, count, icon: Icon, color }, i) => (
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {tierCards.map(({ tier, count, icon: Icon, color, bgColor }, i) => (
           <motion.div
             key={tier}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08, duration: 0.3 }}
-            className="glass-card p-5 flex items-center gap-4 cursor-pointer hover:bg-white/8 transition-all duration-200"
+            className="bg-white rounded-3xl p-6 flex items-center gap-5 cursor-pointer hover:-translate-y-1 transition-all duration-300"
+            style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.06)' }}
             onClick={() => setTierFilter(tierFilter === tier ? 'all' : tier)}
           >
-            <div className={`p-3 rounded-xl bg-white/5 ${color}`}>
-              <Icon className="w-5 h-5" />
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${bgColor} ${color}`}>
+              <Icon className="w-5 h-5" strokeWidth={2} />
             </div>
-            <div>
-              <p className="text-2xl font-display font-bold text-white">{count}</p>
-              <p className="text-xs text-gray-400">{tier}</p>
+            <div className="flex flex-col">
+              <p className="text-3xl font-display font-bold text-gray-900 mb-1 leading-none">{count}</p>
+              <p className="text-sm font-medium text-gray-500">{tier}</p>
             </div>
           </motion.div>
         ))}
@@ -106,19 +109,33 @@ export default function Dashboard() {
 
       {/* Score distribution chart */}
       {portfolio?.score_distribution && (
-        <div className="glass-card p-6">
-          <h2 className="section-title mb-4">Score Distribution</h2>
-          <ResponsiveContainer width="100%" height={180}>
-            <BarChart data={portfolio.score_distribution} barSize={28}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-              <XAxis dataKey="range" tick={{ fill: '#9ca3af', fontSize: 11 }} />
-              <YAxis tick={{ fill: '#9ca3af', fontSize: 11 }} />
-              <Tooltip
-                contentStyle={{ background: '#1a1040', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12 }}
-                labelStyle={{ color: '#e5e7eb' }}
-                itemStyle={{ color: '#a5bbfc' }}
+        <div className="premium-card p-6">
+          <div className="flex flex-col space-y-1.5 pb-6">
+            <h2 className="font-semibold leading-none tracking-tight text-xl text-gray-900">Score Distribution</h2>
+          </div>
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart accessibilityLayer data={portfolio.score_distribution} barSize={32}>
+              <CartesianGrid vertical={false} stroke="#f3f4f6" />
+              <XAxis 
+                dataKey="range" 
+                tick={{ fill: '#6b7280', fontSize: 12 }} 
+                tickLine={false} 
+                tickMargin={10} 
+                axisLine={false} 
               />
-              <Bar dataKey="count" radius={[6, 6, 0, 0]}>
+              <YAxis 
+                tick={{ fill: '#6b7280', fontSize: 12 }} 
+                tickLine={false}
+                tickMargin={10} 
+                axisLine={false} 
+              />
+              <Tooltip
+                cursor={false}
+                contentStyle={{ background: '#ffffff', border: '1px solid #f3f4f6', borderRadius: 8, boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                labelStyle={{ color: '#111827', fontWeight: 600, marginBottom: 4 }}
+                itemStyle={{ color: '#4b5563' }}
+              />
+              <Bar dataKey="count" radius={8}>
                 {portfolio.score_distribution.map((entry, i) => {
                   const mid = (parseInt(entry.range.split('-')[0]) + parseInt(entry.range.split('-')[1])) / 2
                   return <Cell key={i} fill={
@@ -149,7 +166,7 @@ export default function Dashboard() {
           value={sectorFilter}
           onChange={e => setSectorFilter(e.target.value)}
         >
-          {sectors.map(s => <option key={s} value={s} className="bg-gray-900">{s === 'all' ? 'All Sectors' : s.replace('_', ' ')}</option>)}
+          {sectors.map(s => <option key={s} value={s} className="bg-white text-gray-900">{s === 'all' ? 'All Sectors' : s.replace('_', ' ')}</option>)}
         </select>
         <select
           id="tier-filter"
@@ -157,17 +174,17 @@ export default function Dashboard() {
           value={tierFilter}
           onChange={e => setTierFilter(e.target.value)}
         >
-          <option value="all" className="bg-gray-900">All Tiers</option>
-          {TIER_ORDER.map(t => <option key={t} value={t} className="bg-gray-900">{t}</option>)}
+          <option value="all" className="bg-white text-gray-900">All Tiers</option>
+          {TIER_ORDER.map(t => <option key={t} value={t} className="bg-white text-gray-900">{t}</option>)}
         </select>
       </div>
 
       {/* Table */}
-      <div className="glass-card overflow-hidden">
+      <div className="premium-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/8">
+              <tr className="border-b border-gray-100 bg-gray-50/50">
                 {[
                   { key: 'business_name', label: 'Business' },
                   { key: 'sector', label: 'Sector' },
@@ -178,7 +195,7 @@ export default function Dashboard() {
                 ].map(col => (
                   <th
                     key={col.key}
-                    className="text-left px-5 py-4 text-xs text-gray-400 uppercase tracking-wider font-medium cursor-pointer hover:text-white transition-colors"
+                    className="text-left px-6 py-4 text-xs text-gray-500 uppercase tracking-wider font-semibold cursor-pointer hover:text-gray-900 transition-colors"
                     onClick={() => toggleSort(col.key)}
                   >
                     <span className="flex items-center gap-1">
@@ -192,27 +209,27 @@ export default function Dashboard() {
                 <th className="px-5 py-4" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-gray-100">
               {filtered.map(app => (
                 <tr
                   key={app.applicant_id}
-                  className="hover:bg-white/4 transition-colors cursor-pointer group"
+                  className="hover:bg-gray-50 transition-colors cursor-pointer group"
                   onClick={() => navigate(`/applicant/${app.applicant_id}`)}
                 >
-                  <td className="px-5 py-4">
-                    <p className="font-medium text-white group-hover:text-brand-400 transition-colors">
+                  <td className="px-6 py-5">
+                    <p className="font-semibold text-gray-900 group-hover:text-brand-600 transition-colors">
                       {app.business_name}
                     </p>
-                    <p className="text-xs text-gray-500">{app.years_in_business}y active · #{app.applicant_id}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{app.years_in_business}y active · #{app.applicant_id}</p>
                   </td>
-                  <td className="px-5 py-4 capitalize text-gray-300">{(app.sector || '').replace('_', ' ')}</td>
-                  <td className="px-5 py-4 text-gray-300">{app.region}</td>
-                  <td className="px-5 py-4">
-                    <span className="text-xs px-2 py-0.5 rounded-md bg-white/8 text-gray-300">{app.entity_type}</span>
+                  <td className="px-6 py-5 capitalize text-gray-600 font-medium">{(app.sector || '').replace('_', ' ')}</td>
+                  <td className="px-6 py-5 text-gray-600 font-medium">{app.region}</td>
+                  <td className="px-6 py-5">
+                    <span className="text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 font-medium">{app.entity_type}</span>
                   </td>
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-20 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                  <td className="px-6 py-5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-24 h-2 rounded-full bg-gray-100 overflow-hidden">
                         <div
                           className="h-full rounded-full transition-all"
                           style={{
@@ -221,21 +238,23 @@ export default function Dashboard() {
                           }}
                         />
                       </div>
-                      <span className="font-semibold text-white">{Math.round(app.blended_score)}</span>
+                      <span className="font-bold text-gray-900">{Math.round(app.blended_score)}</span>
                     </div>
                   </td>
-                  <td className="px-5 py-4">
-                    <RiskBadge tier={app.risk_tier} size="sm" />
+                  <td className="px-6 py-5">
+                    <RiskBadge tier={app.risk_tier} size="md" />
                   </td>
-                  <td className="px-5 py-4">
-                    <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" />
+                  <td className="px-6 py-5 text-right">
+                    <div className="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-200 transition-colors">
+                      <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-900 transition-colors" />
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <div className="px-5 py-3 border-t border-white/5 text-xs text-gray-500">
+        <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50 text-sm font-medium text-gray-500 text-center">
           Showing {filtered.length} of {applicants.length} applicants
         </div>
       </div>

@@ -1,10 +1,10 @@
 import React from 'react'
 
 const TIER_CONFIG = {
-  'Prime': { color: 'text-emerald-400', bg: 'bg-emerald-500/15 border-emerald-500/30', dot: 'bg-emerald-400' },
-  'Near-Prime': { color: 'text-amber-400', bg: 'bg-amber-500/15 border-amber-500/30', dot: 'bg-amber-400' },
-  'Sub-Prime': { color: 'text-orange-400', bg: 'bg-orange-500/15 border-orange-500/30', dot: 'bg-orange-400' },
-  'Decline': { color: 'text-red-400', bg: 'bg-red-500/15 border-red-500/30', dot: 'bg-red-400' },
+  'Prime': { color: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-200', dot: 'bg-emerald-500' },
+  'Near-Prime': { color: 'text-amber-700', bg: 'bg-amber-50 border-amber-200', dot: 'bg-amber-500' },
+  'Sub-Prime': { color: 'text-orange-700', bg: 'bg-orange-50 border-orange-200', dot: 'bg-orange-500' },
+  'Decline': { color: 'text-red-700', bg: 'bg-red-50 border-red-200', dot: 'bg-red-500' },
 }
 
 export function RiskBadge({ tier, size = 'md' }) {
