@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Activity, Zap } from 'lucide-react';
+import { Activity, Zap, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../AuthContext';
 import api from '../api';
 
@@ -76,6 +76,9 @@ export default function LoginPage() {
 
       {/* Right side - Login Form */}
       <div className="flex-1 flex flex-col justify-center px-8 sm:px-16 md:px-24 bg-white relative shadow-2xl">
+        <Link to="/" className="absolute top-8 left-8 sm:left-12 flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-black transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Home
+        </Link>
         <div className="max-w-md w-full mx-auto space-y-10">
           <div className="text-center">
             <h2 className="text-3xl font-medium tracking-tight text-black mb-2">Sign in</h2>

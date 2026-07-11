@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Activity } from 'lucide-react';
+import { Activity, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../AuthContext';
 
 const LogoIcon = () => (
@@ -15,12 +15,18 @@ export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSignup = (e) => {
     e.preventDefault();
-    // Since this is a mock hackathon frontend, we just redirect to login
-    // In a real app, we would hit the backend API to create a user
-    navigate('/login');
+    // Mock user creation and immediate login
+    login({
+      email,
+      role: 'applicant',
+      id: 1, // Mock applicant ID
+      name: name || company || 'New User'
+    });
+    navigate('/my-score/1');
   };
 
   return (
@@ -52,6 +58,9 @@ export default function SignupPage() {
 
       {/* Right side - Signup Form */}
       <div className="flex-1 flex flex-col justify-center px-8 sm:px-16 md:px-24 bg-white relative shadow-2xl">
+        <Link to="/" className="absolute top-8 left-8 sm:left-12 flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-black transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Home
+        </Link>
         <div className="max-w-md w-full mx-auto space-y-10">
           <div className="text-center">
             <h2 className="text-3xl font-medium tracking-tight text-black mb-2">Create an account</h2>

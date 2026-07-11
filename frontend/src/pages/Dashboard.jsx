@@ -56,10 +56,66 @@ export default function Dashboard() {
   }
 
   if (loading) return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 border-4 border-brand-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-gray-400 text-sm">Loading portfolio data…</p>
+    <div className="space-y-8 animate-fade-in p-6">
+      {/* Header Skeleton */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="h-10 w-48 bg-gray-200 rounded-lg animate-pulse mb-2"></div>
+          <div className="h-5 w-64 bg-gray-200 rounded-md animate-pulse"></div>
+        </div>
+      </div>
+
+      {/* KPI Cards Skeleton */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {[1, 2, 3, 4].map(i => (
+          <div key={i} className="bg-white rounded-3xl p-6 flex items-center gap-5 shadow-sm">
+            <div className="w-12 h-12 rounded-full bg-gray-200 animate-pulse"></div>
+            <div className="flex flex-col gap-2">
+              <div className="h-8 w-16 bg-gray-200 rounded-md animate-pulse"></div>
+              <div className="h-4 w-24 bg-gray-200 rounded-md animate-pulse"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Chart Skeleton */}
+      <div className="premium-card p-6 h-72 flex flex-col gap-4">
+        <div className="h-6 w-40 bg-gray-200 rounded-md animate-pulse"></div>
+        <div className="flex-1 bg-gray-100 rounded-lg animate-pulse"></div>
+      </div>
+
+      {/* Filters Skeleton */}
+      <div className="flex flex-wrap gap-3">
+        <div className="h-10 w-64 bg-gray-200 rounded-xl animate-pulse"></div>
+        <div className="h-10 w-40 bg-gray-200 rounded-xl animate-pulse"></div>
+        <div className="h-10 w-40 bg-gray-200 rounded-xl animate-pulse"></div>
+      </div>
+
+      {/* Table Skeleton */}
+      <div className="premium-card overflow-hidden">
+        <div className="w-full bg-gray-50/50 border-b border-gray-100 h-12 flex items-center px-6 gap-4">
+          {[1, 2, 3, 4, 5, 6].map(i => (
+            <div key={i} className="h-4 w-20 bg-gray-200 rounded animate-pulse flex-1"></div>
+          ))}
+        </div>
+        <div className="divide-y divide-gray-100">
+          {[1, 2, 3, 4, 5].map(i => (
+            <div key={i} className="h-20 flex items-center px-6 gap-4">
+              <div className="flex-1 space-y-2">
+                <div className="h-5 w-32 bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-3 w-24 bg-gray-100 rounded animate-pulse"></div>
+              </div>
+              <div className="flex-1"><div className="h-5 w-24 bg-gray-200 rounded animate-pulse"></div></div>
+              <div className="flex-1"><div className="h-5 w-24 bg-gray-200 rounded animate-pulse"></div></div>
+              <div className="flex-1"><div className="h-6 w-16 bg-gray-200 rounded-full animate-pulse"></div></div>
+              <div className="flex-1 flex items-center gap-2">
+                <div className="h-2 w-20 bg-gray-200 rounded-full animate-pulse"></div>
+                <div className="h-5 w-8 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+              <div className="flex-1"><div className="h-6 w-20 bg-gray-200 rounded-full animate-pulse"></div></div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

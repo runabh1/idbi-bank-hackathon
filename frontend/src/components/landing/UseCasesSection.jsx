@@ -16,6 +16,27 @@ export default function UseCasesSection() {
             <p className="text-black/60 text-base leading-relaxed max-w-sm">
               CreditPulse powers a wide range of modes for banks, loan officers, and MSME owners wanting accurate risk assessments and financial health tracking.
             </p>
+            
+            <div className="mt-12 space-y-6 max-w-sm">
+              <div className="group border-t border-gray-200/60 pt-6">
+                <h4 className="text-lg font-medium text-black mb-2 transition-colors">Admin Dashboard</h4>
+                <p className="text-black/60 text-sm leading-relaxed">
+                  Comprehensive portal to monitor all incoming applications, AI compliance flags, and portfolio-level risk metrics in real-time.
+                </p>
+              </div>
+              <div className="group border-t border-gray-200/60 pt-6">
+                <h4 className="text-lg font-medium text-black mb-2 transition-colors">MSME Owner Portal</h4>
+                <p className="text-black/60 text-sm leading-relaxed">
+                  A personalized view for business owners to understand their score, run interactive simulations, and track financial health over time.
+                </p>
+              </div>
+              <div className="group border-t border-gray-200/60 border-b pb-6 pt-6">
+                <h4 className="text-lg font-medium text-black mb-2 transition-colors">AI Committee Audit</h4>
+                <p className="text-black/60 text-sm leading-relaxed">
+                  An transparent audit trail of the AI agents' collaborative debate, showcasing the exact reasoning behind approvals and rejections.
+                </p>
+              </div>
+            </div>
           </div>
           
           <div className="relative rounded-3xl overflow-hidden min-h-[720px]">

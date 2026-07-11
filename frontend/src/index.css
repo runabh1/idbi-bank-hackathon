@@ -176,3 +176,23 @@
   }
 }
 
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  nav {
+    display: none !important;
+  }
+
+  main {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  .premium-card, .glass-card, .stat-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

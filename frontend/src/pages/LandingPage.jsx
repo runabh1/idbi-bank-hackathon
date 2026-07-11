@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from '../components/landing/Navbar';
 import HeroSection from '../components/landing/HeroSection';
+import DeepDiveSection from '../components/landing/DeepDiveSection';
 import InfoSection from '../components/landing/InfoSection';
 import FeaturesSection from '../components/landing/FeaturesSection';
 import BackedBySection from '../components/landing/BackedBySection';
@@ -15,6 +16,7 @@ export default function LandingPage() {
         <HeroSection />
       </div>
       <InfoSection />
+      <DeepDiveSection />
       <FeaturesSection />
       <BackedBySection />
       <UseCasesSection />

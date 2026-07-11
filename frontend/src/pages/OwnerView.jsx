@@ -58,8 +58,50 @@ export default function OwnerView() {
   }
 
   if (!app) return (
-    <div className="flex items-center justify-center h-screen bg-[#F7F8FA]">
-      <div className="w-10 h-10 border-4 border-black border-t-transparent rounded-full animate-spin" />
+    <div className="max-w-7xl mx-auto px-6 py-12 space-y-8 animate-fade-in">
+      {/* Header Skeleton */}
+      <div className="flex justify-between items-start">
+        <div className="flex gap-4">
+          <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse"></div>
+          <div>
+            <div className="w-48 h-8 bg-gray-200 rounded-lg animate-pulse mb-2"></div>
+            <div className="w-32 h-4 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        </div>
+        <div className="flex gap-3">
+          <div className="w-32 h-10 rounded-full bg-gray-200 animate-pulse"></div>
+          <div className="w-32 h-10 rounded-full bg-gray-200 animate-pulse"></div>
+        </div>
+      </div>
+
+      {/* Main Content Skeleton */}
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Left Column (Score Gauge area) */}
+        <div className="premium-card p-8 flex flex-col items-center justify-center h-96">
+          <div className="w-48 h-48 rounded-full bg-gray-200 animate-pulse mb-6"></div>
+          <div className="w-32 h-8 rounded-lg bg-gray-200 animate-pulse"></div>
+        </div>
+        
+        {/* Right Column (Radar Chart area) */}
+        <div className="lg:col-span-2 premium-card p-8 h-96 flex flex-col justify-between">
+          <div className="w-40 h-6 bg-gray-200 rounded animate-pulse mb-6"></div>
+          <div className="flex-1 w-full bg-gray-100 rounded-lg animate-pulse"></div>
+        </div>
+      </div>
+
+      {/* Bottom Cards Skeleton */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {[1, 2].map(i => (
+          <div key={i} className="premium-card p-6 h-48">
+            <div className="w-1/3 h-6 bg-gray-200 rounded animate-pulse mb-4"></div>
+            <div className="space-y-3">
+              <div className="w-full h-4 bg-gray-100 rounded animate-pulse"></div>
+              <div className="w-5/6 h-4 bg-gray-100 rounded animate-pulse"></div>
+              <div className="w-4/6 h-4 bg-gray-100 rounded animate-pulse"></div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 

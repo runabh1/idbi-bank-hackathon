@@ -4,7 +4,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import {
   ArrowLeft, MessageSquare, CreditCard, ShieldCheck,
   Send, ExternalLink, X, CheckCircle, Loader,
-  AlertTriangle, AlertOctagon, TrendingUp
+  AlertTriangle, AlertOctagon, TrendingUp, Download
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getApplicant, simulate, chat, consent, loanApply } from '../api'
@@ -294,12 +294,12 @@ export default function ApplicantDetail() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Link
-            to={`/my-score/${id}`}
+          <button
+            onClick={() => window.print()}
             className="btn-secondary flex items-center gap-2 text-sm"
           >
-            <ExternalLink className="w-4 h-4" /> Owner View
-          </Link>
+            <Download className="w-4 h-4" /> Download PDF
+          </button>
           <button
             id="btn-fetch-aa"
             onClick={() => setShowConsent(true)}

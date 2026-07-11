@@ -14,8 +14,10 @@ export default function Navbar() {
   const { user, logout } = useAuth()
   
   const handleLogout = () => {
-    logout()
     navigate('/')
+    setTimeout(() => {
+      logout()
+    }, 0)
   }
   
   return (
@@ -55,12 +57,6 @@ export default function Navbar() {
 
         {/* Right Section: Actions */}
         <div className="flex items-center gap-3">
-          {/* Status pill (Black pill style like 'Send') */}
-          <div className="hidden sm:flex items-center gap-2 bg-black text-white rounded-full px-5 py-2 text-sm font-medium cursor-default">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            Live
-          </div>
-
           {/* Sign Out (Outline pill style like 'Receive') */}
           <button
             onClick={handleLogout}

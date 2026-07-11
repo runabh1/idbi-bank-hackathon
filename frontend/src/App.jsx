@@ -1,16 +1,17 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Navbar from './components/Navbar'
-import LandingPage from './pages/LandingPage'
-import Dashboard from './pages/Dashboard'
-import ApplicantDetail from './pages/ApplicantDetail'
-import OwnerView from './pages/OwnerView'
-import AdminPanel from './pages/AdminPanel'
-import LoginPage from './pages/LoginPage'
-import SignupPage from './pages/SignupPage'
 import { ToastProvider } from './components/Toast'
 import { AuthProvider, useAuth } from './AuthContext'
+
+const LandingPage = lazy(() => import('./pages/LandingPage'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const ApplicantDetail = lazy(() => import('./pages/ApplicantDetail'))
+const OwnerView = lazy(() => import('./pages/OwnerView'))
+const AdminPanel = lazy(() => import('./pages/AdminPanel'))
+const LoginPage = lazy(() => import('./pages/LoginPage'))
+const SignupPage = lazy(() => import('./pages/SignupPage'))
 
 const pageVariants = {
   initial: { opacity: 0, y: 12 },
@@ -28,7 +29,9 @@ function AnimatedRoute({ children }) {
       exit="out"
       transition={pageTransition}
     >
-      {children}
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-medium text-gray-500">Loading...</div>}>
+        {children}
+      </Suspense>
     </motion.div>
   )
 }
