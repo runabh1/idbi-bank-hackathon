@@ -58,6 +58,7 @@ app.add_middleware(
 )
 
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 logger = logging.getLogger("creditpulse")
 
 
@@ -83,8 +84,19 @@ class PostgresConnectionWrapper:
 def get_db():
     database_url = os.environ.get("DATABASE_URL")
     if not database_url:
+        logger.error("DATABASE_URL not set in environment")
         raise HTTPException(status_code=500, detail="DATABASE_URL not set in environment")
-    conn = psycopg2.connect(database_url)
+    
+    # Clean the URL to remove accidental newlines or trailing spaces pasted in Render
+    database_url = database_url.strip().strip("'").strip('"')
+    
+    try:
+        conn = psycopg2.connect(database_url)
+    except Exception as e:
+        logger.error(f"[get_db] Connection failed: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail="DB Connection Failed")
     try:
         yield PostgresConnectionWrapper(conn)
     finally:
