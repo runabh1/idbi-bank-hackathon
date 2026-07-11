@@ -2,8 +2,9 @@ import React, { useState, useCallback } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Users, Loader, Shield, TrendingUp, Scale, Crown, ChevronDown, ChevronUp } from 'lucide-react'
+import { API_BASE_URL } from '../config'
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+const API_BASE = API_BASE_URL
 
 const AGENTS = [
   {

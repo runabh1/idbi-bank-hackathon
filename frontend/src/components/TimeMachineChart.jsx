@@ -5,8 +5,9 @@ import {
 } from 'recharts'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Clock, AlertTriangle, Loader, Play } from 'lucide-react'
+import { API_BASE_URL } from '../config'
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+const API_BASE = API_BASE_URL
 
 function CustomTooltip({ active, payload, label }) {
   if (!active || !payload || !payload.length) return null
