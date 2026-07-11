@@ -137,9 +137,23 @@ function ConsentModal({ applicantId, onClose, onSuccess }) {
         )}
 
         {step === 'loading' && (
-          <div className="flex flex-col items-center gap-4 py-6">
-            <Loader className="w-10 h-10 text-brand-500 animate-spin" />
-            <p className="text-gray-500 text-sm">Fetching data from GSTN, UPI, AA, EPFO…</p>
+          <div className="max-w-7xl mx-auto space-y-6 animate-fade-in mt-6">
+            <div className="flex items-start gap-4 mb-8">
+              <div className="w-12 h-12 rounded-full bg-gray-200 animate-pulse"></div>
+              <div className="space-y-2">
+                <div className="w-48 h-6 bg-gray-200 rounded animate-pulse"></div>
+                <div className="w-32 h-4 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+            </div>
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="premium-card p-6 h-64 bg-gray-100 animate-pulse"></div>
+              <div className="lg:col-span-2 premium-card p-6 h-64 bg-gray-100 animate-pulse"></div>
+            </div>
+            <div className="grid md:grid-cols-4 gap-4">
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="premium-card p-4 h-24 bg-gray-100 animate-pulse"></div>
+              ))}
+            </div>
           </div>
         )}
 

@@ -36,8 +36,20 @@ export default function AdminPanel() {
   }, [])
 
   if (loading) return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="w-10 h-10 border-4 border-brand-500 border-t-transparent rounded-full animate-spin" />
+    <div className="max-w-7xl mx-auto px-6 py-12 space-y-8 animate-fade-in">
+      <div className="flex justify-between items-center">
+        <div className="w-48 h-8 bg-gray-200 rounded animate-pulse"></div>
+        <div className="w-32 h-10 bg-gray-200 rounded-full animate-pulse"></div>
+      </div>
+      <div className="grid md:grid-cols-4 gap-4">
+        {[1,2,3,4].map(i => (
+          <div key={i} className="premium-card p-6 h-32 bg-gray-100 animate-pulse"></div>
+        ))}
+      </div>
+      <div className="grid lg:grid-cols-2 gap-6">
+        <div className="premium-card p-6 h-96 bg-gray-100 animate-pulse"></div>
+        <div className="premium-card p-6 h-96 bg-gray-100 animate-pulse"></div>
+      </div>
     </div>
   )
 

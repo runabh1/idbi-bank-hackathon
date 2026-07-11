@@ -178,13 +178,20 @@ class LoginRequest(BaseModel):
     userid: str
     password: str
 
+_CREDENTIALS_CACHE = None
+
 @app.post("/auth/login")
 def login(req: LoginRequest):
-    cred_file = ROOT / "data_generation" / "user_credentials.csv"
-    if not cred_file.exists():
-        raise HTTPException(status_code=500, detail="Credentials file not found")
-    
-    df = pd.read_csv(cred_file)
+    global _CREDENTIALS_CACHE
+    if _CREDENTIALS_CACHE is None:
+        cred_file = ROOT / "data_generation" / "user_credentials.csv"
+        if not cred_file.exists():
+            raise HTTPException(status_code=500, detail="Credentials file not found")
+        _CREDENTIALS_CACHE = pd.read_csv(cred_file)
+        _CREDENTIALS_CACHE['email'] = _CREDENTIALS_CACHE['email'].astype(str)
+        _CREDENTIALS_CACHE['password'] = _CREDENTIALS_CACHE['password'].astype(str)
+        
+    df = _CREDENTIALS_CACHE
     # Using 'email' column as userid for matching
     df['email'] = df['email'].astype(str)
     df['password'] = df['password'].astype(str)
@@ -209,9 +216,15 @@ def root():
     return {"service": "CreditPulse API", "version": "1.0.0", "status": "healthy"}
 
 
+_APPLICANTS_CACHE = None
+
 @app.get("/applicants")
 def list_applicants(conn=Depends(get_db)):
     """List all applicants with score, risk tier, sector, region."""
+    global _APPLICANTS_CACHE
+    if _APPLICANTS_CACHE is not None:
+        return _APPLICANTS_CACHE
+
     rows = conn.execute(
         """SELECT a.applicant_id, a.business_name, a.sector, a.region, a.tier,
                   a.entity_type, a.years_in_business, a.defaulted_12m,
@@ -238,6 +251,7 @@ def list_applicants(conn=Depends(get_db)):
         d["risk_tier"] = score_r.risk_tier
         result.append(d)
 
+    _APPLICANTS_CACHE = result
     return result
 
 
