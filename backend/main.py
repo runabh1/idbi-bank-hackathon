@@ -25,7 +25,8 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pandas as pd
-import sqlite3
+import psycopg2
+import psycopg2.extras
 
 # ── Path setup ───────────────────────────────────────────────────────────────
 ROOT = Path(__file__).parent.parent
@@ -62,11 +63,30 @@ logger = logging.getLogger("creditpulse")
 
 # ── DB helper ────────────────────────────────────────────────────────────────
 
+class PostgresConnectionWrapper:
+    def __init__(self, conn):
+        self.conn = conn
+
+    def execute(self, query, params=None):
+        # Translate SQLite '?' to Postgres '%s'
+        query = query.replace('?', '%s')
+        cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cur.execute(query, params)
+        return cur
+        
+    def commit(self):
+        self.conn.commit()
+
+    def close(self):
+        self.conn.close()
+
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    database_url = os.environ.get("DATABASE_URL")
+    if not database_url:
+        raise HTTPException(status_code=500, detail="DATABASE_URL not set in environment")
+    conn = psycopg2.connect(database_url)
     try:
-        yield conn
+        yield PostgresConnectionWrapper(conn)
     finally:
         conn.close()
 

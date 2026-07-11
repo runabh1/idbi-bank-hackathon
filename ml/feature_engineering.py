@@ -4,22 +4,31 @@ Aggregates 12-month time series into 5 per-applicant scores (0-100).
 """
 
 from pathlib import Path
-import sqlite3
+import os
+from sqlalchemy import create_engine
 import numpy as np
 import pandas as pd
 
-DB_PATH = Path(__file__).parent.parent / "data_generation" / "creditpulse.db"
-
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if not DATABASE_URL:
+    try:
+        from dotenv import load_dotenv
+        load_dotenv(Path(__file__).parent.parent / ".env")
+        DATABASE_URL = os.environ.get("DATABASE_URL")
+    except ImportError:
+        pass
 
 def load_tables():
-    conn = sqlite3.connect(DB_PATH)
-    applicants = pd.read_sql("SELECT * FROM applicants", conn)
-    gst = pd.read_sql("SELECT * FROM gst_records", conn)
-    upi = pd.read_sql("SELECT * FROM upi_transactions", conn)
-    aa = pd.read_sql("SELECT * FROM aa_bank_data", conn)
-    epfo = pd.read_sql("SELECT * FROM epfo_records", conn)
-    labels = pd.read_sql("SELECT * FROM labels", conn)
-    conn.close()
+    if not DATABASE_URL:
+        raise ValueError("DATABASE_URL must be set to run feature engineering")
+    engine = create_engine(DATABASE_URL)
+    with engine.connect() as conn:
+        applicants = pd.read_sql("SELECT * FROM applicants", conn)
+        gst = pd.read_sql("SELECT * FROM gst_records", conn)
+        upi = pd.read_sql("SELECT * FROM upi_transactions", conn)
+        aa = pd.read_sql("SELECT * FROM aa_bank_data", conn)
+        epfo = pd.read_sql("SELECT * FROM epfo_records", conn)
+        labels = pd.read_sql("SELECT * FROM labels", conn)
     return applicants, gst, upi, aa, epfo, labels
 
 

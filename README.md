@@ -22,7 +22,7 @@
   - EPFO (Employee Provident Fund) compliance records
   - GST filing records and turnover
   - UPI transaction inflows and outflows
-- Stores generated records efficiently in a local SQLite database (`creditpulse.db`) and CSV files.
+- Stores generated records efficiently in a cloud-native **Neon DB (PostgreSQL)** database and CSV files.
 
 ### 2. Machine Learning & Scoring Engine (`/ml`)
 - **Feature Engineering**: Scripts (`feature_engineering.py`) to process raw alternative data and extract predictive features (e.g., revenue stability, cash flow health, banking discipline, compliance score).
@@ -33,7 +33,7 @@
 ### 3. Backend API (`/backend`)
 - Developed using **FastAPI** (`main.py`) for high performance.
 - Exposes RESTful endpoints to query applicant profiles, trigger score computation, and fetch historical trends.
-- Integrates seamlessly with the SQLite database via SQLAlchemy / standard SQLite connectors.
+- Integrates seamlessly with the **PostgreSQL database (Neon DB)** via SQLAlchemy and psycopg2 connectors.
 - **LLM Integration** (`llm_service.py`): Leverages Generative AI (OpenAI, Anthropic, or Google Gemini via `.env` configuration) to generate:
   - Natural language explanations of the credit score for loan officers.
   - Actionable improvement tips for the MSME business owner.
@@ -52,7 +52,7 @@
 ## 🛠️ Tech Stack
 
 - **Frontend**: React 18, Vite, Tailwind CSS, Framer Motion, Recharts, Lucide React
-- **Backend**: Python 3, FastAPI, Uvicorn, Pydantic, SQLite
+- **Backend**: Python 3, FastAPI, Uvicorn, Pydantic, PostgreSQL (Neon DB), psycopg2, SQLAlchemy
 - **Machine Learning**: Pandas, NumPy, Scikit-Learn, XGBoost, Joblib, SciPy
 - **AI/LLM**: `google-generativeai`, `openai`, `anthropic` (plug-and-play depending on config)
 
@@ -61,8 +61,8 @@
 ### Backend & ML
 1. Navigate to the `creditpulse` directory.
 2. Install Python dependencies: `pip install -r requirements.txt`
-3. Set up environment variables by copying `.env.example` to `.env` and adding your API keys.
-4. Run the data generation (if needed): `python data_generation/generate.py`
+3. Set up environment variables by copying `.env.example` to `.env`. Ensure you provide your `DATABASE_URL` (Neon DB Postgres connection string) and LLM API keys.
+4. Run the data generation script to seed your Neon DB with mock applicant data: `python data_generation/generate.py`
 5. Start the backend server: `uvicorn backend.main:app --reload` (Runs on port 8000)
 
 ### Frontend

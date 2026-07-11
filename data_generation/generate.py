@@ -6,7 +6,8 @@ Produces 6 CSVs and loads them into creditpulse.db (SQLite).
 
 import os
 import random
-import sqlite3
+from sqlalchemy import create_engine
+import psycopg2
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -21,7 +22,13 @@ np.random.seed(SEED)
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 HERE = Path(__file__).parent
-DB_PATH = HERE / "creditpulse.db"
+try:
+    from dotenv import load_dotenv
+    load_dotenv(HERE.parent / ".env")
+except ImportError:
+    pass
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # ── Config ───────────────────────────────────────────────────────────────────
 N_APPLICANTS = 1000
@@ -436,15 +443,18 @@ def generate_labels(applicants_df, profiles, gst_df, upi_df, aa_df, epfo_df):
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-#  SQLITE LOADER
+#  POSTGRES LOADER
 # ═══════════════════════════════════════════════════════════════════════════
 
-def load_to_sqlite(db_path, tables: dict):
-    conn = sqlite3.connect(db_path)
-    for name, df in tables.items():
-        df.to_sql(name, conn, if_exists="replace", index=False)
-        print(f"  [OK] {name}: {len(df):,} rows loaded")
-    conn.close()
+def load_to_postgres(database_url, tables: dict):
+    if not database_url:
+        print("[!] No DATABASE_URL provided. Skipping database load.")
+        return
+    engine = create_engine(database_url)
+    with engine.connect() as conn:
+        for name, df in tables.items():
+            df.to_sql(name, conn, if_exists="replace", index=False)
+            print(f"  [OK] {name}: {len(df):,} rows loaded")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -499,11 +509,11 @@ def main():
     labels_df.to_csv(out_dir / "labels.csv", index=False)
     print(f"  [OK] labels.csv - {len(labels_df)} rows")
 
-    # 8. Load into SQLite
-    print(f"\n[8] Loading all tables into SQLite -> {DB_PATH} ...")
+    # 8. Load into Postgres
+    print(f"\n[8] Loading all tables into Postgres ...")
     # Merge labels into applicants for convenience
     applicants_with_labels = applicants_df.merge(labels_df, on="applicant_id")
-    load_to_sqlite(DB_PATH, {
+    load_to_postgres(DATABASE_URL, {
         "applicants": applicants_with_labels,
         "gst_records": gst_df,
         "upi_transactions": upi_df,
@@ -514,14 +524,15 @@ def main():
 
     # 9. Sanity check - sample rows
     print("\n[9] Sample data verification:")
-    conn = sqlite3.connect(DB_PATH)
-    for table in ["applicants", "gst_records", "upi_transactions", "aa_bank_data", "epfo_records"]:
-        df = pd.read_sql(f"SELECT * FROM {table} LIMIT 2", conn)
-        print(f"\n  {table}:\n{df.to_string(index=False)}")
-    conn.close()
+    if DATABASE_URL:
+        engine = create_engine(DATABASE_URL)
+        with engine.connect() as conn:
+            for table in ["applicants", "gst_records", "upi_transactions", "aa_bank_data", "epfo_records"]:
+                df = pd.read_sql(f"SELECT * FROM {table} LIMIT 2", conn)
+                print(f"\n  {table}:\n{df.to_string(index=False)}")
 
     print("\n" + "="*60)
-    print("[OK] Phase 1 complete. All CSVs and SQLite DB generated.")
+    print("[OK] Phase 1 complete. All CSVs generated and DB loaded.")
     print("="*60)
 
 
