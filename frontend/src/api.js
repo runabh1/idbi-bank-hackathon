@@ -3,6 +3,14 @@ import { API_BASE_URL } from './config'
 
 const api = axios.create({ baseURL: API_BASE_URL, timeout: 60000 })
 
+api.interceptors.request.use(config => {
+  if (config.method === 'get') {
+    config.params = config.params || {}
+    config.params['_t'] = Date.now()
+  }
+  return config
+})
+
 export const getApplicants = () => api.get('/applicants').then(r => r.data)
 export const getApplicant = (id) => api.get(`/applicants/${id}`).then(r => r.data)
 export const getScore = (id) => api.get(`/score/${id}`).then(r => r.data)

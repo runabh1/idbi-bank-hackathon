@@ -154,6 +154,32 @@ class LoanApplyResponse(BaseModel):
     message: str
 
 
+class LoginRequest(BaseModel):
+    userid: str
+    password: str
+
+@app.post("/auth/login")
+def login(req: LoginRequest):
+    cred_file = ROOT / "data_generation" / "user_credentials.csv"
+    if not cred_file.exists():
+        raise HTTPException(status_code=500, detail="Credentials file not found")
+    
+    df = pd.read_csv(cred_file)
+    # Using 'email' column as userid for matching
+    df['email'] = df['email'].astype(str)
+    df['password'] = df['password'].astype(str)
+    
+    user_matches = df[(df['email'] == req.userid) & (df['password'] == req.password)]
+    if user_matches.empty:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    u = user_matches.iloc[0]
+    return {
+        "id": str(u['applicant_id']),
+        "name": str(u['business_name']),
+        "role": str(u['role'])
+    }
+
 # ═══════════════════════════════════════════════════════════════════════════
 #  ENDPOINTS
 # ═══════════════════════════════════════════════════════════════════════════

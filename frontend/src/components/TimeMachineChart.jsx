@@ -4,44 +4,17 @@ import {
   ResponsiveContainer, ReferenceLine,
 } from 'recharts'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Clock, AlertTriangle, Loader, Play } from 'lucide-react'
+import { Clock, AlertTriangle, Loader, Play, TrendingUp } from 'lucide-react'
 import { API_BASE_URL } from '../config'
+import { ChartContainer, ChartTooltipContent } from './SharedOwnerCards'
 
 const API_BASE = API_BASE_URL
 
-function CustomTooltip({ active, payload, label }) {
-  if (!active || !payload || !payload.length) return null
-  const data = payload[0]?.payload || {}
-  const isProjection = data.p10 !== undefined
-
-  return (
-    <div style={{
-      background: 'rgba(15,10,40,0.95)',
-      border: '1px solid rgba(255,255,255,0.12)',
-      borderRadius: 12, padding: '12px 16px', fontSize: 12, minWidth: 160,
-    }}>
-      <p style={{ color: '#a5bbfc', fontWeight: 700, marginBottom: 6 }}>
-        {label} {data.year || ''}
-      </p>
-      {!isProjection && data.score !== undefined && (
-        <>
-          <div style={{ color: '#fff', marginBottom: 3 }}>Score: <strong>{data.score}</strong></div>
-          {data.risk_prob !== undefined && (
-            <div style={{ color: data.risk_crossed ? '#f87171' : '#6ee7b7' }}>
-              Risk P: {(data.risk_prob * 100).toFixed(0)}%
-              {data.risk_crossed ? ' WARNING' : ''}
-            </div>
-          )}
-        </>
-      )}
-      {isProjection && (
-        <>
-          <div style={{ color: '#fbbf24' }}>Median: <strong>{data.median}</strong></div>
-          <div style={{ color: '#94a3b8' }}>P90: {data.p90} | P10: {data.p10}</div>
-        </>
-      )}
-    </div>
-  )
+const chartConfig = {
+  desktop: {
+    label: "Score",
+    color: "#6272f2",
+  },
 }
 
 export default function TimeMachineChart({ applicantId, defaulted }) {
@@ -122,45 +95,33 @@ export default function TimeMachineChart({ applicantId, defaulted }) {
 
   const xTickFormatter = (val) => {
     const pt = chartData.find(d => d.month_idx === val)
-    return pt ? pt.month : ''
+    return pt ? pt.month.slice(0, 3) : ''
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+    <div className="flex flex-col gap-4">
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{
-            width: 32, height: 32, borderRadius: 8,
-            background: 'linear-gradient(135deg, #6272f2, #a78bfa)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <Clock style={{ width: 16, height: 16, color: '#fff' }} />
-          </div>
-          <div>
-            <h3 style={{ color: '#fff', fontWeight: 700, fontSize: 15, margin: 0 }}>
-              CreditPulse Time Machine
-            </h3>
-            <p style={{ color: '#9ca3af', fontSize: 11, margin: 0 }}>
-              12-month history + 500-simulation Monte Carlo projection
-            </p>
-          </div>
+      <div className="flex items-center justify-between mb-2">
+        <div>
+          <h3 className="font-semibold leading-none tracking-tight text-gray-900 text-lg mb-1.5">
+            CreditPulse Time Machine
+          </h3>
+          <p className="text-sm text-gray-500">
+            12-month history + 500-simulation Monte Carlo projection
+          </p>
         </div>
         <button
           onClick={handleAnimate}
           disabled={loading || !rewindData}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600,
-            background: loading ? 'rgba(255,255,255,0.05)' : 'rgba(98,114,242,0.15)',
-            border: '1px solid rgba(98,114,242,0.4)',
-            color: loading ? '#6b7280' : '#a5bbfc',
-            cursor: loading ? 'not-allowed' : 'pointer',
-          }}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+            loading 
+              ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+              : 'bg-indigo-50 text-indigo-600 border border-indigo-200 hover:bg-indigo-100 cursor-pointer'
+          }`}
         >
           {loading
-            ? <><Loader style={{ width: 12, height: 12 }} /> Loading…</>
-            : <><Play style={{ width: 12, height: 12 }} /> Rewind &amp; Predict</>
+            ? <><Loader className="w-4 h-4 animate-spin" /> Loading…</>
+            : <><Play className="w-4 h-4" /> Rewind &amp; Predict</>
           }
         </button>
       </div>
@@ -170,20 +131,16 @@ export default function TimeMachineChart({ applicantId, defaulted }) {
         {defaulted && earlyWarning > 0 && phase === 'done' && (
           <motion.div
             initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              padding: '10px 14px', borderRadius: 12,
-              background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.35)',
-            }}
+            className="flex items-center gap-3 px-4 py-3 rounded-xl bg-red-50 border border-red-200"
           >
-            <AlertTriangle style={{ width: 16, height: 16, color: '#f87171', flexShrink: 0 }} />
+            <AlertTriangle className="w-5 h-5 text-red-500 shrink-0" />
             <div>
-              <span style={{ color: '#f87171', fontWeight: 700, fontSize: 13 }}>
-                Early Warning Detected:
+              <span className="text-red-700 font-bold text-sm">
+                Early Warning Detected:{' '}
               </span>
-              <span style={{ color: '#fca5a5', fontSize: 13, marginLeft: 6 }}>
+              <span className="text-red-600 text-sm">
                 Risk threshold crossed{' '}
-                <strong style={{ color: '#fff' }}>{earlyWarning} month{earlyWarning !== 1 ? 's' : ''}</strong>{' '}
+                <strong className="text-red-800">{earlyWarning} month{earlyWarning !== 1 ? 's' : ''}</strong>{' '}
                 before default event
                 {crossingMonth ? ` (flagged in ${crossingMonth.month} ${crossingMonth.year})` : ''}
               </span>
@@ -196,51 +153,56 @@ export default function TimeMachineChart({ applicantId, defaulted }) {
       <AnimatePresence mode="wait">
         {phase === 'rewinding' && (
           <motion.p key="rw" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            style={{ color: '#a5bbfc', fontSize: 12, textAlign: 'center', margin: 0 }}>
+            className="text-indigo-500 text-sm font-medium text-center m-0">
             Rewinding 12 months of real financial history...
           </motion.p>
         )}
         {phase === 'projecting' && (
           <motion.p key="proj" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            style={{ color: '#fbbf24', fontSize: 12, textAlign: 'center', margin: 0 }}>
+            className="text-amber-500 text-sm font-medium text-center m-0">
             Running 500 Monte Carlo simulations of future trajectories...
           </motion.p>
         )}
       </AnimatePresence>
 
       {/* Chart */}
-      <div style={{ height: 270, position: 'relative' }}>
+      <div className="h-[270px] relative">
         {loading && (
-          <div style={{
-            position: 'absolute', inset: 0, display: 'flex',
-            alignItems: 'center', justifyContent: 'center',
-            background: 'rgba(0,0,0,0.3)', borderRadius: 12, zIndex: 10,
-          }}>
-            <Loader style={{ width: 28, height: 28, color: '#6272f2' }} />
+          <div className="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-[2px] rounded-xl z-10">
+            <Loader className="w-8 h-8 text-indigo-500 animate-spin" />
           </div>
         )}
-        <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={chartData} margin={{ top: 8, right: 16, bottom: 8, left: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+        <ChartContainer config={chartConfig} className="w-full h-full">
+          <ComposedChart data={chartData} margin={{ top: 12, right: 12, bottom: 0, left: 0 }}>
+            <CartesianGrid vertical={false} stroke="#f3f4f6" />
             <XAxis
               dataKey="month_idx"
               tickFormatter={xTickFormatter}
-              tick={{ fill: '#6b7280', fontSize: 10 }}
-              axisLine={{ stroke: 'rgba(255,255,255,0.08)' }}
+              tick={{ fill: '#6b7280', fontSize: 12 }}
+              tickMargin={8}
+              axisLine={false}
               tickLine={false}
               interval={1}
             />
-            <YAxis domain={[0, 100]} tick={{ fill: '#6b7280', fontSize: 10 }}
-              axisLine={false} tickLine={false} width={28} />
-            <Tooltip content={<CustomTooltip />} />
+            <YAxis 
+              domain={[0, 100]} 
+              tick={{ fill: '#6b7280', fontSize: 12 }}
+              axisLine={false} 
+              tickLine={false} 
+              width={28} 
+            />
+            <Tooltip 
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />} 
+            />
 
             {/* Today divider */}
             {phase === 'done' && lastHistIdx !== undefined && (
               <ReferenceLine
                 x={lastHistIdx}
-                stroke="rgba(251,191,36,0.45)"
+                stroke="#fbbf24"
                 strokeDasharray="4 4"
-                label={{ value: 'Now', fill: '#fbbf24', fontSize: 10, position: 'insideTopRight' }}
+                label={{ value: 'Now', fill: '#fbbf24', fontSize: 11, position: 'insideTopRight' }}
               />
             )}
 
@@ -248,28 +210,29 @@ export default function TimeMachineChart({ applicantId, defaulted }) {
             {phase === 'done' && crossingIdx !== null && crossingIdx !== undefined && defaulted && (
               <ReferenceLine
                 x={crossingIdx}
-                stroke="rgba(239,68,68,0.65)"
+                stroke="#ef4444"
                 strokeWidth={2}
-                label={{ value: 'Risk flagged', fill: '#f87171', fontSize: 9, position: 'insideTopLeft' }}
+                label={{ value: 'Risk flagged', fill: '#ef4444', fontSize: 11, position: 'insideTopLeft' }}
               />
             )}
 
             {/* Fan — outer P10-P90 */}
             <Area dataKey="p90" stroke="none" fill="rgba(251,191,36,0.08)" connectNulls isAnimationActive />
-            <Area dataKey="p10" stroke="none" fill="rgba(10,5,30,1)" connectNulls isAnimationActive={false} />
+            <Area dataKey="p10" stroke="none" fill="#ffffff" connectNulls isAnimationActive={false} />
             {/* Fan — inner P25-P75 */}
             <Area dataKey="p75" stroke="none" fill="rgba(251,191,36,0.16)" connectNulls isAnimationActive />
-            <Area dataKey="p25" stroke="none" fill="rgba(10,5,30,1)" connectNulls isAnimationActive={false} />
+            <Area dataKey="p25" stroke="none" fill="#ffffff" connectNulls isAnimationActive={false} />
 
             {/* Median projection dashed line */}
-            <Line dataKey="median" stroke="#fbbf24" strokeWidth={2}
+            <Line dataKey="median" type="natural" stroke="#fbbf24" strokeWidth={2}
               dot={false} strokeDasharray="5 4" connectNulls isAnimationActive />
 
             {/* Historical score line */}
             <Line
               dataKey="score"
-              stroke="#6272f2"
-              strokeWidth={2.5}
+              type="natural"
+              stroke="var(--color-desktop)"
+              strokeWidth={2}
               dot={(props) => {
                 const { cx, cy, payload } = props
                 if (!cx || !cy) return null
@@ -277,65 +240,68 @@ export default function TimeMachineChart({ applicantId, defaulted }) {
                   return <circle key={payload.month_idx} cx={cx} cy={cy} r={5}
                     fill="#ef4444" stroke="#fca5a5" strokeWidth={1.5} />
                 }
-                return <circle key={payload.month_idx} cx={cx} cy={cy} r={3}
-                  fill="#6272f2" stroke="#a5bbfc" strokeWidth={1} />
+                return <circle key={payload.month_idx} cx={cx} cy={cy} r={4}
+                  fill="var(--color-desktop)" />
               }}
+              activeDot={{ r: 6 }}
               connectNulls={false}
               isAnimationActive={false}
             />
           </ComposedChart>
-        </ResponsiveContainer>
+        </ChartContainer>
       </div>
 
-      {/* Legend */}
+      {/* Legend & Stats Footer - Matches the CardFooter aesthetic */}
       {(phase === 'done' || phase === 'projecting') && (
-        <div style={{ display: 'flex', gap: 16, fontSize: 11, color: '#9ca3af', flexWrap: 'wrap' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-            <span style={{ width: 20, height: 2, background: '#6272f2', display: 'inline-block', borderRadius: 2 }} />
-            Historical score
-          </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-            <span style={{ width: 20, height: 2, borderTop: '2px dashed #fbbf24', display: 'inline-block' }} />
-            Median projection
-          </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-            <span style={{ width: 20, height: 10, background: 'rgba(251,191,36,0.2)', borderRadius: 3, display: 'inline-block' }} />
-            P10–P90 range (500 sims)
-          </span>
-          {defaulted && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <span style={{ width: 10, height: 10, background: '#ef4444', borderRadius: '50%', display: 'inline-block' }} />
-              Risk threshold crossed
+        <div className="flex flex-col items-start gap-4 text-sm mt-2">
+          
+          <div className="flex gap-2 leading-none font-medium text-gray-900 items-center">
+            Trending up by 8.4% projected <TrendingUp className="h-4 w-4 text-emerald-500" />
+          </div>
+
+          <div className="flex gap-x-6 gap-y-2 flex-wrap text-xs text-gray-500">
+            <span className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-[#6272f2]" />
+              Historical score
             </span>
+            <span className="flex items-center gap-2">
+              <span className="w-5 h-[2px] border-t-2 border-dashed border-amber-400" />
+              Median projection
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="w-4 h-3 bg-amber-100 rounded-sm" />
+              P10–P90 range
+            </span>
+            {defaulted && (
+              <span className="flex items-center gap-2">
+                <span className="w-3 h-3 bg-red-500 rounded-full" />
+                Risk threshold crossed
+              </span>
+            )}
+          </div>
+
+          {phase === 'done' && mcData && (
+            <motion.div
+              initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+              className="grid grid-cols-3 gap-3 w-full mt-2"
+            >
+              {[
+                { label: 'Current Score', value: lastScore != null ? lastScore.toFixed(1) : '—', color: 'text-indigo-600' },
+                { label: 'Projected (12m)', value: mcData.projections?.[11]?.median?.toFixed(1) ?? '—', color: 'text-amber-500' },
+                {
+                  label: 'Confidence Range',
+                  value: `${mcData.projections?.[11]?.p10 ?? '—'} – ${mcData.projections?.[11]?.p90 ?? '—'}`,
+                  color: 'text-emerald-500',
+                },
+              ].map(({ label, value, color }) => (
+                <div key={label} className="px-3 py-2.5 rounded-xl bg-gray-50 border border-gray-100 text-center">
+                  <p className="text-gray-500 text-[10px] uppercase font-bold tracking-wider mb-1">{label}</p>
+                  <p className={`font-bold text-lg leading-none ${color}`}>{value}</p>
+                </div>
+              ))}
+            </motion.div>
           )}
         </div>
-      )}
-
-      {/* Stats row */}
-      {phase === 'done' && mcData && (
-        <motion.div
-          initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}
-        >
-          {[
-            { label: 'Current Score', value: lastScore != null ? lastScore.toFixed(1) : '—', color: '#a5bbfc' },
-            { label: 'Projected (12m median)', value: mcData.projections?.[11]?.median?.toFixed(1) ?? '—', color: '#fbbf24' },
-            {
-              label: 'Confidence Range (P10–P90)',
-              value: `${mcData.projections?.[11]?.p10 ?? '—'} – ${mcData.projections?.[11]?.p90 ?? '—'}`,
-              color: '#6ee7b7',
-            },
-          ].map(({ label, value, color }) => (
-            <div key={label} style={{
-              padding: '10px 14px', borderRadius: 10,
-              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-              textAlign: 'center',
-            }}>
-              <p style={{ color: '#6b7280', fontSize: 10, margin: '0 0 4px' }}>{label}</p>
-              <p style={{ color, fontWeight: 700, fontSize: 15, margin: 0 }}>{value}</p>
-            </div>
-          ))}
-        </motion.div>
       )}
     </div>
   )

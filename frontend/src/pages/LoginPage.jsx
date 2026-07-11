@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Activity } from 'lucide-react';
+import { Activity, Zap } from 'lucide-react';
 import { useAuth } from '../AuthContext';
-import loginsData from '../data/logins.json';
+import api from '../api';
+
+const DEMO_ACCOUNTS = [
+  { label: 'Admin / Loan Officer', email: 'admin@creditpulse.com', password: 'admin123', color: '#6972ef' },
+  { label: 'Loan Officer', email: 'loan.officer@creditpulse.com', password: 'officer123', color: '#7c3aed' },
+  { label: 'Owner #1 – Heritage', email: 'owner_1@heritage.in', password: 'heri0001', color: '#059669' },
+  { label: 'Owner #7 – Shree Mfg', email: 'owner_7@shree.in', password: 'shre0007', color: '#b45309' },
+];
 
 const LogoIcon = () => (
   <div className="w-10 h-10 rounded-xl bg-[#6972ef] flex items-center justify-center shadow-md">
@@ -17,28 +24,26 @@ export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
 
-    const userRecord = loginsData[email];
-    
-    if (userRecord && userRecord.password === password) {
-      // Success
+    try {
+      const res = await api.post('/auth/login', { userid: email, password });
       login({
         email,
-        role: userRecord.role,
-        id: userRecord.id,
-        name: userRecord.name
+        role: res.data.role,
+        id: res.data.id,
+        name: res.data.name
       });
       
-      if (userRecord.role === 'admin') {
+      if (res.data.role === 'admin') {
         navigate('/dashboard');
       } else {
-        navigate(`/my-score/${userRecord.id}`);
+        navigate(`/my-score/${res.data.id}`);
       }
-    } else {
-      setError('Invalid email or password');
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Invalid email or password');
     }
   };
 
@@ -146,8 +151,32 @@ export default function LoginPage() {
           <p className="text-center text-sm text-gray-500 mt-8">
             Don't have an account? <Link to="/signup" className="text-black font-medium hover:underline">Sign up</Link>
           </p>
-          
-          <div className="text-center text-xs text-gray-400 mt-12">
+
+          {/* Demo credentials quick-fill */}
+          <div className="mt-8 p-4 rounded-2xl border border-gray-100 bg-gray-50 space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <Zap className="w-4 h-4 text-[#6972ef]" />
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Quick Demo Login</span>
+            </div>
+            {DEMO_ACCOUNTS.map(acc => (
+              <button
+                key={acc.email}
+                type="button"
+                onClick={() => { setEmail(acc.email); setPassword(acc.password); }}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-white border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all text-left group"
+              >
+                <div>
+                  <p className="text-xs font-semibold text-gray-800 group-hover:text-black">{acc.label}</p>
+                  <p className="text-[10px] text-gray-400 font-mono mt-0.5">{acc.email}</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] font-mono text-gray-400 bg-gray-100 px-2 py-1 rounded-md">{acc.password}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          <div className="text-center text-xs text-gray-400 mt-6">
             © CreditPulse · Privacy · Terms
           </div>
         </div>

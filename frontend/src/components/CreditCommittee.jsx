@@ -129,8 +129,8 @@ function AgentBubble({ agent, text, visible, isChair }) {
               )}
             </div>
             <div
-              className="markdown-content markdown-content-compact"
-              style={{ color: isChair ? '#e5e7eb' : '#d1d5db', fontSize: 13, lineHeight: 1.6 }}
+              className="markdown-light markdown-content-compact"
+              style={{ color: '#1f2937', fontSize: 13, lineHeight: 1.6 }}
             >
               <ReactMarkdown>{text}</ReactMarkdown>
             </div>
@@ -178,22 +178,13 @@ export default function CreditCommittee({ applicantId }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{
-            width: 32, height: 32, borderRadius: 8,
-            background: 'linear-gradient(135deg, #7c3aed, #4f46e5)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <Users style={{ width: 16, height: 16, color: '#fff' }} />
-          </div>
-          <div>
-            <h3 style={{ color: '#fff', fontWeight: 700, fontSize: 15, margin: 0 }}>
-              AI Credit Committee
-            </h3>
-            <p style={{ color: '#9ca3af', fontSize: 11, margin: 0 }}>
-              3 specialized agents debate · Chair decides
-            </p>
-          </div>
+        <div>
+          <h3 style={{ color: '#111827', fontWeight: 600, fontSize: 18, margin: '0 0 6px 0', lineHeight: 1 }}>
+            AI Credit Committee
+          </h3>
+          <p style={{ color: '#6b7280', fontSize: 14, margin: 0 }}>
+            3 specialized agents debate · Chair decides
+          </p>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           {hasAny && (
@@ -201,13 +192,13 @@ export default function CreditCommittee({ applicantId }) {
               onClick={() => setCollapsed(c => !c)}
               style={{
                 display: 'flex', alignItems: 'center', gap: 4,
-                padding: '5px 10px', borderRadius: 7, fontSize: 11,
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: '#9ca3af', cursor: 'pointer',
+                padding: '6px 12px', borderRadius: 20, fontSize: 12, fontWeight: 600,
+                background: '#f3f4f6',
+                border: '1px solid #e5e7eb',
+                color: '#4b5563', cursor: 'pointer', transition: 'all 0.2s',
               }}
             >
-              {collapsed ? <ChevronDown style={{ width: 12, height: 12 }} /> : <ChevronUp style={{ width: 12, height: 12 }} />}
+              {collapsed ? <ChevronDown style={{ width: 14, height: 14 }} /> : <ChevronUp style={{ width: 14, height: 14 }} />}
               {collapsed ? 'Show' : 'Hide'}
             </button>
           )}
@@ -216,17 +207,17 @@ export default function CreditCommittee({ applicantId }) {
             disabled={loading}
             style={{
               display: 'flex', alignItems: 'center', gap: 6,
-              padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600,
-              background: loading ? 'rgba(255,255,255,0.05)' : 'rgba(124,58,237,0.2)',
-              border: '1px solid rgba(124,58,237,0.5)',
-              color: loading ? '#6b7280' : '#c4b5fd',
+              padding: '6px 14px', borderRadius: 20, fontSize: 12, fontWeight: 600,
+              background: loading ? '#f3f4f6' : '#ede9fe',
+              border: `1px solid ${loading ? '#e5e7eb' : '#ddd6fe'}`,
+              color: loading ? '#9ca3af' : '#7c3aed',
               cursor: loading ? 'not-allowed' : 'pointer',
             }}
           >
             {loading ? (
-              <><Loader style={{ width: 12, height: 12 }} /> Convening…</>
+              <><Loader style={{ width: 14, height: 14 }} className="animate-spin" /> Convening…</>
             ) : (
-              <><Users style={{ width: 12, height: 12 }} /> {hasAny ? 'Reconvene' : 'Convene Committee'}</>
+              <><Users style={{ width: 14, height: 14 }} /> {hasAny ? 'Reconvene' : 'Convene Committee'}</>
             )}
           </button>
         </div>
@@ -263,31 +254,32 @@ export default function CreditCommittee({ applicantId }) {
         <div
           onClick={convene}
           style={{
-            borderRadius: 14, border: '1px dashed rgba(255,255,255,0.1)',
-            padding: '32px 24px', display: 'flex', flexDirection: 'column',
-            alignItems: 'center', gap: 12, cursor: 'pointer',
-            background: 'rgba(255,255,255,0.01)',
-            transition: 'border-color 0.2s',
+            borderRadius: 14, border: '1px dashed #d1d5db',
+            padding: '40px 24px', display: 'flex', flexDirection: 'column',
+            alignItems: 'center', gap: 16, cursor: 'pointer',
+            background: '#f9fafb',
+            transition: 'all 0.2s',
           }}
+          className="hover:bg-gray-50 hover:border-gray-400"
         >
-          <div style={{ display: 'flex', gap: 10 }}>
+          <div style={{ display: 'flex', gap: 12 }}>
             {[
               { Icon: Shield, c: '#ef4444' }, { Icon: TrendingUp, c: '#10b981' },
               { Icon: Scale, c: '#60a5fa' }, { Icon: Crown, c: '#fbbf24' },
             ].map(({ Icon, c }, i) => (
               <div key={i} style={{
-                width: 36, height: 36, borderRadius: 10, opacity: 0.6,
-                background: `${c}20`, border: `1px solid ${c}40`,
+                width: 40, height: 40, borderRadius: 12, opacity: 0.9,
+                background: `${c}15`, border: `1px solid ${c}30`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                <Icon style={{ width: 18, height: 18, color: c }} />
+                <Icon style={{ width: 20, height: 20, color: c }} />
               </div>
             ))}
           </div>
-          <p style={{ color: '#6b7280', fontSize: 13, margin: 0, textAlign: 'center' }}>
+          <p style={{ color: '#4b5563', fontSize: 14, margin: 0, textAlign: 'center', fontWeight: 500 }}>
             Convene the committee to watch 3 AI agents argue this case
             <br />
-            <span style={{ fontSize: 11 }}>Risk · Growth · Compliance · Chair's Decision</span>
+            <span style={{ fontSize: 12, color: '#6b7280', fontWeight: 400, marginTop: 4, display: 'inline-block' }}>Risk · Growth · Compliance · Chair's Decision</span>
           </p>
         </div>
       )}
