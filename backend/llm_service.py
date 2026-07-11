@@ -203,15 +203,25 @@ Score delta: {data.get('delta'):+.1f} points"""
     return result if result else _fallback_whatif(data)
 
 
-def grounded_chat(applicant_data: dict, question: str) -> str:
+def grounded_chat(applicant_data: dict, question: str, history: list = None) -> str:
     import json
+    history = history or []
+    
+    history_text = ""
+    if history:
+        history_text = "Previous Conversation:\n"
+        for msg in history[-4:]: # Keep last 4 messages to save context length
+            role = "Loan Officer" if msg.get("role") == "user" else "AI Assistant"
+            history_text += f"{role}: {msg.get('text')}\n"
+        history_text += "\n"
+
     prompt = f"""You are CreditPulse's AI assistant helping a loan officer analyse an MSME applicant. 
 Answer the question using ONLY the provided applicant data. If the answer isn't in the data, say so clearly. 
 Never fabricate numbers. Keep the answer concise (2-4 sentences).
 
 Applicant data: {json.dumps(applicant_data, default=str)}
 
-Question: {question}"""
+{history_text}Question: {question}"""
 
     result = _call_llm(prompt, max_tokens=300)
     return result if result else _fallback_chat(applicant_data, question)

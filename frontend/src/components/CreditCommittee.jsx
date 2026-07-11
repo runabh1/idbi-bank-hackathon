@@ -162,12 +162,14 @@ export default function CreditCommittee({ applicantId }) {
       allAgents.forEach((agent, i) => {
         setTimeout(() => {
           setVisibleAgents(prev => [...prev, agent.key])
-          if (i === allAgents.length - 1) setConvened(true)
+          if (i === allAgents.length - 1) {
+            setConvened(true)
+            setLoading(false)
+          }
         }, 400 + i * 900) // 900ms between each agent appearing
       })
     } catch (e) {
       console.error('Committee failed:', e)
-    } finally {
       setLoading(false)
     }
   }, [applicantId])

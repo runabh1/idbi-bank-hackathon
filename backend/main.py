@@ -170,6 +170,7 @@ class SimulateRequest(BaseModel):
 class ChatRequest(BaseModel):
     applicant_id: int
     question: str
+    history: list = []
 
 
 class ConsentResponse(BaseModel):
@@ -538,7 +539,7 @@ def chat(req: ChatRequest, conn=Depends(get_db)):
         "risk_tier": score_r.risk_tier,
     }
 
-    answer = grounded_chat(context, req.question)
+    answer = grounded_chat(context, req.question, req.history)
     return {
         "applicant_id": req.applicant_id,
         "question": req.question,
@@ -1082,10 +1083,17 @@ def committee(applicant_id: int, refresh: bool = False, conn=Depends(get_db)):
 
     # ── Cache the result ─────────────────────────────────────────────────
     conn.execute("""
-        INSERT OR REPLACE INTO committee_cache
-            (applicant_id, risk_officer, growth_officer, compliance_officer,
+        INSERT INTO committee_cache 
+            (applicant_id, risk_officer, growth_officer, compliance_officer, 
              chair_decision, generated_at, duration_seconds)
         VALUES (?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT (applicant_id) DO UPDATE SET
+            risk_officer = EXCLUDED.risk_officer,
+            growth_officer = EXCLUDED.growth_officer,
+            compliance_officer = EXCLUDED.compliance_officer,
+            chair_decision = EXCLUDED.chair_decision,
+            generated_at = EXCLUDED.generated_at,
+            duration_seconds = EXCLUDED.duration_seconds
     """, (
         applicant_id,
         result["risk_officer"],

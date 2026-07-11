@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import {
@@ -184,6 +184,16 @@ export default function ApplicantDetail() {
   const [loanStatus, setLoanStatus] = useState(localStorage.getItem(`loanStatus_${id}`) || 'none')
   const [loanLoading, setLoanLoading] = useState(false)
   const [consentDone, setConsentDone] = useState(false)
+  const chatContainerRef = useRef(null)
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      })
+    }
+  }, [chatMessages, chatLoading])
 
   useEffect(() => {
     let cancelled = false
@@ -224,11 +234,12 @@ export default function ApplicantDetail() {
   const sendChat = async () => {
     if (!chatInput.trim()) return
     const q = chatInput
+    const currentHistory = [...chatMessages]
     setChatInput('')
     setChatMessages(m => [...m, { role: 'user', text: q }])
     setChatLoading(true)
     try {
-      const res = await chat(parseInt(id), q)
+      const res = await chat(parseInt(id), q, currentHistory)
       setChatMessages(m => [...m, { role: 'assistant', text: res.answer }])
     } finally {
       setChatLoading(false)
@@ -526,7 +537,10 @@ export default function ApplicantDetail() {
             <h3 className="section-title mb-4 flex items-center gap-2">
               <MessageSquare className="w-4 h-4 text-purple-600" /> Ask About This Applicant
             </h3>
-            <div className="flex-1 space-y-3 max-h-64 overflow-y-auto mb-4 pr-1">
+            <div 
+              ref={chatContainerRef}
+              className="flex-1 space-y-3 max-h-64 overflow-y-auto mb-4 pr-1"
+            >
               {chatMessages.length === 0 && (
                 <p className="text-gray-500 text-xs text-center pt-4">
                   Ask anything about this applicant's financial health…

@@ -18,8 +18,8 @@ export const simulate = (id, feature_name, new_value) =>
   api.post(`/simulate/${id}`, { feature_name, new_value }).then(r => r.data)
 export const explain = (id) => api.get(`/explain/${id}`).then(r => r.data)
 export const explainOwner = (id) => api.get(`/explain-owner/${id}`).then(r => r.data)
-export const chat = (applicant_id, question) =>
-  api.post('/chat', { applicant_id, question }).then(r => r.data)
+export const chat = (applicant_id, question, history = []) =>
+  api.post('/chat', { applicant_id, question, history }).then(r => r.data)
 export const getPortfolio = () => api.get('/portfolio').then(r => r.data)
 export const consent = (id) => api.post(`/consent/${id}`).then(r => r.data)
 export const loanApply = (id) => api.post(`/loan-apply/${id}`).then(r => r.data)
