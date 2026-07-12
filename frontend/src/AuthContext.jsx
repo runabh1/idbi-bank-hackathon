@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import api from './api';
 
 const AuthContext = createContext(null);
 
@@ -17,7 +18,14 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('creditpulse_user', JSON.stringify(userData));
   };
 
-  const logout = () => {
+  const logout = async () => {
+    if (user && user.is_session_user) {
+      try {
+        await api.delete(`/auth/session-user/${user.id}`);
+      } catch (err) {
+        console.error("Failed to delete session user:", err);
+      }
+    }
     setUser(null);
     localStorage.removeItem('creditpulse_user');
   };

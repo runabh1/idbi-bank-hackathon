@@ -191,6 +191,16 @@ class LoginRequest(BaseModel):
     userid: str
     password: str
 
+class SignupRequest(BaseModel):
+    business_name: str
+    sector: str = "Technology"
+    region: str = "Urban"
+    years_in_business: float = 1.0
+    employee_count: int = 5
+    gstin: str = ""
+    email: str
+    password: str
+
 _CREDENTIALS_CACHE = None
 
 @app.post("/auth/login")
@@ -219,6 +229,56 @@ def login(req: LoginRequest):
         "name": str(u['business_name']),
         "role": str(u['role'])
     }
+
+@app.post("/auth/signup")
+def signup(req: SignupRequest, conn=Depends(get_db)):
+    cur = conn.cursor()
+    cur.execute("SELECT MAX(applicant_id) FROM applicants")
+    row = cur.fetchone()
+    max_id = row[0] if row and row[0] is not None else 0
+    new_id = max_id + 1
+    
+    cur.execute("""
+        INSERT INTO applicants 
+        (applicant_id, business_name, sector, region, years_in_business, employee_count, gstin, tier, entity_type, default_probability, defaulted_12m) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, 'Medium', 'Private Limited', 0.1, 0)
+    """, (new_id, req.business_name, req.sector, req.region, req.years_in_business, req.employee_count, req.gstin))
+    
+    cur.execute("""
+        INSERT INTO applicant_features 
+        (applicant_id, business_name, sector, region, tier, years_in_business, entity_type, 
+        revenue_stability_score, cashflow_health_score, banking_discipline_score, compliance_score, employment_stability_score, 
+        gst_avg_delay_days, gst_on_time_pct, gst_turnover_trend, upi_avg_inflow, upi_avg_outflow, upi_inflow_volatility, 
+        aa_avg_balance, aa_avg_overdraft_days, aa_total_emi_bounces, aa_vendor_regularity, epfo_on_time_pct, epfo_emp_trend_pct, 
+        defaulted_12m, default_probability)
+        VALUES (?, ?, ?, ?, 'Medium', ?, 'Private Limited', 
+        85.0, 80.0, 90.0, 95.0, 88.0, 
+        2.0, 95.0, 5.0, 500000.0, 400000.0, 0.1, 
+        100000.0, 0.0, 0, 95.0, 98.0, 2.0, 
+        0, 0.1)
+    """, (new_id, req.business_name, req.sector, req.region, req.years_in_business))
+    
+    conn.commit()
+    
+    return {
+        "id": str(new_id),
+        "name": req.business_name,
+        "role": "applicant",
+        "is_session_user": True
+    }
+
+@app.delete("/auth/session-user/{applicant_id}")
+def delete_session_user(applicant_id: int, conn=Depends(get_db)):
+    cur = conn.cursor()
+    cur.execute("DELETE FROM applicants WHERE applicant_id = ?", (applicant_id,))
+    cur.execute("DELETE FROM applicant_features WHERE applicant_id = ?", (applicant_id,))
+    conn.commit()
+    
+    # Invalidate cache if needed
+    global _APPLICANTS_CACHE
+    _APPLICANTS_CACHE = None
+    
+    return {"status": "deleted"}
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  ENDPOINTS

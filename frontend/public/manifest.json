@@ -1,0 +1,20 @@
+{
+  "name": "CreditPulse",
+  "short_name": "CreditPulse",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F5F5",
+  "theme_color": "#6972ef",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
